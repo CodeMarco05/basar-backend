@@ -3,6 +3,7 @@ package internal
 import (
 	"encoding/json"
 	"fmt"
+	"hackathon-basar-backend/internal/server/routes"
 	"net/http"
 	"os"
 	"strconv"
@@ -20,6 +21,8 @@ type AppConfig struct {
 var Config *AppConfig
 
 func LoadApplicationConfig() {
+	// ------------------------------------------------------------ //
+	// load the env config
 	logger := GetLogger()
 
 	err := godotenv.Load()
@@ -66,9 +69,16 @@ func ChiConfig() *chi.Mux {
 
 	// TODO implement own logger middle ware
 
+	r.Use(middleware.Logger)
+	r.Use(middleware.Recoverer)
+	r.Use(AuthMiddleware)
+	r.Get("/health", routes.HealthCheck)
+
 	r.Route("/api/v1", func(r chi.Router) {
+		r.Use(middleware.Logger)
 		r.Use(middleware.Recoverer)
 		r.Use(AuthMiddleware)
+
 	})
 
 	return r
