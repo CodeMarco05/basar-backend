@@ -70,7 +70,7 @@ func LoadApplicationConfig() {
 	// ------------------------------------------------------------ //
 	// load the mongodb connection
 
-	MongoDB, err = db.InitMongoDB("mongodb://localhost:27017", "bazzar")
+	MongoDB, err = db.InitMongoDB(os.Getenv("MONGODB_URI"), "bazzar")
 	if err != nil {
 		logger.Error().Msgf("Error setting up MongoDB connection: %v", err)
 		os.Exit(1)
