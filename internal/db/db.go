@@ -145,3 +145,26 @@ func GetAllPosts(ctx context.Context, db *mongo.Database) ([]models.Post, error)
 
 	return posts, nil
 }
+
+// InsertPost inserts a new post into the posts collection
+// MongoDB will automatically generate an ObjectID for the _id field
+func InsertPost(ctx context.Context, db *mongo.Database, post models.Post) (string, error) {
+	collection := db.Collection("posts")
+
+	// Set the creation timestamp
+	post.CreatedAt = time.Now()
+
+	// Insert the post
+	result, err := collection.InsertOne(ctx, post)
+	if err != nil {
+		return "", fmt.Errorf("failed to insert post: %w", err)
+	}
+
+	// Return the generated ObjectID as a string
+	insertedID, ok := result.InsertedID.(string)
+	if !ok {
+		return "", fmt.Errorf("failed to convert inserted ID to string")
+	}
+
+	return insertedID, nil
+}
