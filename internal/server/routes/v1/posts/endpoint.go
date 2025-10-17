@@ -55,5 +55,11 @@ func InsertPost(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusOK)
 	err = json.NewEncoder(w).Encode(resultString)
 }
-func DeletePost(w http.ResponseWriter, r *http.Request) {}
+func DeletePost(w http.ResponseWriter, r *http.Request) {
+	/*log := logger.GetLogger()
+
+	postToDelete := struct {
+		ID string `json:"id"`
+	}{}*/
+}
 func UpdatePost(w http.ResponseWriter, r *http.Request) {}

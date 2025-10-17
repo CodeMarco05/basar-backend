@@ -84,6 +84,7 @@ func ChiConfig() *chi.Mux {
 	r.Route("/api/v1", func(r chi.Router) {
 		r.Route("/posts", func(r chi.Router) {
 			r.Get("/", posts.GetAllPosts)
+			r.Post("/", posts.InsertPost)
 		})
 
 	})
