@@ -3,6 +3,7 @@ package internal
 import (
 	"encoding/json"
 	"fmt"
+	"hackathon-basar-backend/internal/config"
 	"hackathon-basar-backend/internal/db"
 	"hackathon-basar-backend/internal/logger"
 	"hackathon-basar-backend/internal/server/routes"
@@ -13,16 +14,7 @@ import (
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
 	"github.com/joho/godotenv"
-	"go.mongodb.org/mongo-driver/mongo"
 )
-
-type AppConfig struct {
-	Version string
-	Port    uint16
-}
-
-var Config *AppConfig
-var MongoDB *mongo.Database
 
 func LoadApplicationConfig() {
 	// ------------------------------------------------------------ //
@@ -35,7 +27,7 @@ func LoadApplicationConfig() {
 		os.Exit(1)
 	}
 
-	Config = &AppConfig{
+	config.Config = &config.AppConfig{
 		Version: os.Getenv("VERSION"),
 		Port: func() uint16 {
 			res, err := strconv.ParseUint(os.Getenv("PORT"), 10, 16)
@@ -48,7 +40,7 @@ func LoadApplicationConfig() {
 	}
 
 	// print the application config
-	configJson, err := json.Marshal(*Config)
+	configJson, err := json.Marshal(*config.Config)
 	if err != nil {
 		logger.Error().Msgf("Error marshalling config: %v", err)
 		os.Exit(1)
@@ -70,7 +62,7 @@ func LoadApplicationConfig() {
 	// ------------------------------------------------------------ //
 	// load the mongodb connection
 
-	MongoDB, err = db.InitMongoDB(os.Getenv("MONGODB_URI"), "bazzar")
+	config.MongoDB, err = db.InitMongoDB(os.Getenv("MONGODB_URI"), "bazzar")
 	if err != nil {
 		logger.Error().Msgf("Error setting up MongoDB connection: %v", err)
 		os.Exit(1)
@@ -101,7 +93,7 @@ func ChiConfig() *chi.Mux {
 func Serve(r *chi.Mux) {
 	l := logger.GetLogger()
 
-	port := Config.Port
+	port := config.Config.Port
 
 	l.Info().Msg(fmt.Sprintf("Starting on port: %d", port))
 
