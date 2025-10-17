@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"hackathon-basar-backend/internal/logger"
+	"hackathon-basar-backend/internal/models"
 	"log"
 	"time"
 
@@ -123,4 +124,24 @@ func ensureCollectionsExist(ctx context.Context, db *mongo.Database) error {
 	}
 
 	return nil
+}
+
+// GetAllPosts retrieves all posts from the posts collection
+func GetAllPosts(ctx context.Context, db *mongo.Database) ([]models.Post, error) {
+	collection := db.Collection("posts")
+
+	// Find all posts
+	cursor, err := collection.Find(ctx, bson.M{})
+	if err != nil {
+		return nil, fmt.Errorf("failed to find posts: %w", err)
+	}
+	defer cursor.Close(ctx)
+
+	// Decode all posts
+	var posts []models.Post
+	if err := cursor.All(ctx, &posts); err != nil {
+		return nil, fmt.Errorf("failed to decode posts: %w", err)
+	}
+
+	return posts, nil
 }
