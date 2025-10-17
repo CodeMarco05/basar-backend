@@ -104,7 +104,7 @@ func ensureCollectionsExist(ctx context.Context, db *mongo.Database) error {
 
 	// Define required collections
 	requiredCollections := []string{
-		"listings",
+		"posts",
 		// Add more collection names as needed
 	}
 
