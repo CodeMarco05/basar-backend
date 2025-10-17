@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"hackathon-basar-backend/internal"
 )
 
 func main() {
@@ -15,5 +16,9 @@ func main() {
 ╚═════╝ ╚═╝  ╚═╝╚══════╝╚══════╝╚═╝  ╚═╝╚═╝  ╚═╝
 	`)
 
-	LoadApplicationConfig()
+	internal.LoadApplicationConfig()
+
+	chi := internal.ChiConfig()
+
+	internal.Serve(chi)
 }

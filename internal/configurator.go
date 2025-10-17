@@ -13,7 +13,7 @@ import (
 
 type AppConfig struct {
 	Version string
-	Port    int16
+	Port    uint16
 }
 
 var Config *AppConfig
@@ -27,19 +27,21 @@ func LoadApplicationConfig() {
 		os.Exit(1)
 	}
 
+	logger.Info().Msgf("16 bit max value %v")
+
 	Config = &AppConfig{
 		Version: os.Getenv("VERSION"),
-		Port: func() int16 {
-			res, err := strconv.ParseInt(os.Getenv("PORT"), 10, 16)
+		Port: func() uint16 {
+			res, err := strconv.ParseUint(os.Getenv("PORT"), 10, 16)
 			if err != nil {
 				logger.Error().Msgf("Error parsing PORT: %v", err)
 				os.Exit(1)
 			}
-			return int16(res)
+			return uint16(res)
 		}(),
 	}
 
-	// prin the application config
+	// print the application config
 	configJson, err := json.Marshal(*Config)
 	if err != nil {
 		logger.Error().Msgf("Error marshalling config: %v", err)
@@ -62,7 +64,7 @@ func ChiConfig() *chi.Mux {
 func Serve(r *chi.Mux) {
 	l := GetLogger()
 
-	port := 3000
+	port := Config.Port
 
 	l.Info().Msg(fmt.Sprintf("Starting on port: %d", port))
 
