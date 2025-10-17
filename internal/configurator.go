@@ -4,8 +4,8 @@ import (
 	"encoding/json"
 	"fmt"
 	"hackathon-basar-backend/internal/db"
+	"hackathon-basar-backend/internal/logger"
 	"hackathon-basar-backend/internal/server/routes"
-	"hackathon-basar-backend/internal/server/routes/v1/posts"
 	"net/http"
 	"os"
 	"strconv"
@@ -13,6 +13,7 @@ import (
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
 	"github.com/joho/godotenv"
+	"go.mongodb.org/mongo-driver/mongo"
 )
 
 type AppConfig struct {
@@ -21,12 +22,12 @@ type AppConfig struct {
 }
 
 var Config *AppConfig
-var MongoDBClient *db.MongoDBClient
+var MongoDB *mongo.Database
 
 func LoadApplicationConfig() {
 	// ------------------------------------------------------------ //
 	// load the env config
-	logger := GetLogger()
+	logger := logger.GetLogger()
 
 	err := godotenv.Load()
 	if err != nil {
@@ -65,6 +66,16 @@ func LoadApplicationConfig() {
 	}
 
 	logger.Info().Msg("Connection to firebase finished")
+
+	// ------------------------------------------------------------ //
+	// load the mongodb connection
+
+	MongoDB, err = db.InitMongoDB("mongodb://localhost:27017", "bazzar")
+	if err != nil {
+		logger.Error().Msgf("Error setting up MongoDB connection: %v", err)
+		os.Exit(1)
+	}
+
 }
 
 func ChiConfig() *chi.Mux {
@@ -74,16 +85,13 @@ func ChiConfig() *chi.Mux {
 
 	r.Use(middleware.Logger)
 	r.Use(middleware.Recoverer)
-	//r.Use(AuthMiddleware)
+	r.Use(AuthMiddleware)
 	r.Get("/health", routes.HealthCheck)
 
 	r.Route("/api/v1", func(r chi.Router) {
 		r.Use(middleware.Logger)
 		r.Use(middleware.Recoverer)
-
-		r.Route("/posts", func(r chi.Router) {
-			r.Get("/", posts.GetAllPosts)
-		})
+		r.Use(AuthMiddleware)
 
 	})
 
@@ -91,7 +99,7 @@ func ChiConfig() *chi.Mux {
 }
 
 func Serve(r *chi.Mux) {
-	l := GetLogger()
+	l := logger.GetLogger()
 
 	port := Config.Port
 

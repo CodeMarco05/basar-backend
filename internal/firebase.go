@@ -2,6 +2,7 @@ package internal
 
 import (
 	"context"
+	"hackathon-basar-backend/internal/logger"
 	"net/http"
 	"os"
 	"path/filepath"
@@ -15,7 +16,7 @@ import (
 var authClient *auth.Client
 
 func InitFirebase() error {
-	logger := GetLogger()
+	logger := logger.GetLogger()
 
 	// get current dir
 	cwd, err := os.Getwd()
@@ -40,7 +41,7 @@ func InitFirebase() error {
 
 func AuthMiddleware(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		logger := GetLogger()
+		logger := logger.GetLogger()
 
 		// Extract token from header
 		authHeader := r.Header.Get("Authorization")
