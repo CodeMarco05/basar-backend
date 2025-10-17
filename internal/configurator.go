@@ -7,6 +7,7 @@ import (
 	"hackathon-basar-backend/internal/db"
 	"hackathon-basar-backend/internal/logger"
 	"hackathon-basar-backend/internal/server/routes"
+	"hackathon-basar-backend/internal/server/routes/v1/posts"
 	"net/http"
 	"os"
 	"strconv"
@@ -81,9 +82,9 @@ func ChiConfig() *chi.Mux {
 	r.Get("/health", routes.HealthCheck)
 
 	r.Route("/api/v1", func(r chi.Router) {
-		r.Use(middleware.Logger)
-		r.Use(middleware.Recoverer)
-		r.Use(AuthMiddleware)
+		r.Route("/posts", func(r chi.Router) {
+			r.Get("/", posts.GetAllPosts)
+		})
 
 	})
 

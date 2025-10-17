@@ -14,6 +14,7 @@ func HealthCheck(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		log := logger.GetLogger()
 		log.Error().Msgf("The DB isn't available %v", err)
+		http.Error(w, "The database isn't available.", http.StatusUnauthorized)
 	}
 
 	_, err = w.Write([]byte("The application appears to be up and running"))
