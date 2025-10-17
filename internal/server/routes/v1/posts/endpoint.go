@@ -5,6 +5,7 @@ import (
 	"hackathon-basar-backend/internal/config"
 	"hackathon-basar-backend/internal/db"
 	"hackathon-basar-backend/internal/logger"
+	"hackathon-basar-backend/internal/models"
 	"net/http"
 )
 
@@ -27,6 +28,32 @@ func GetAllPosts(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func InsertPost(w http.ResponseWriter, r *http.Request) {}
+func InsertPost(w http.ResponseWriter, r *http.Request) {
+	log := logger.GetLogger()
+	var post models.InsertPost
+
+	err := json.NewDecoder(r.Body).Decode(&post)
+
+	if err != nil {
+		log.Error().Msgf("Invalid request with body: %v", r.Body)
+		http.Error(w, "Invalid request body when transforming to the required object.", http.StatusBadRequest)
+	}
+
+	objectIdString, err := db.InsertPost(r.Context(), config.MongoDB, post)
+	if err != nil {
+		log.Error().Msgf("Inserting post failed: %v", err)
+		http.Error(w, "Internal Server Error", http.StatusInternalServerError)
+	}
+
+	resultString := struct {
+		ID string `json:"id"`
+	}{
+		objectIdString,
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(http.StatusOK)
+	err = json.NewEncoder(w).Encode(resultString)
+}
 func DeletePost(w http.ResponseWriter, r *http.Request) {}
 func UpdatePost(w http.ResponseWriter, r *http.Request) {}

@@ -15,3 +15,13 @@ type Post struct {
 	Images      []string  `bson:"images" json:"images"`
 	CreatedAt   time.Time `bson:"created_at" json:"created_at"`
 }
+
+type InsertPost struct {
+	Creator     string   `json:"creator"`
+	Title       string   `json:"title"`
+	Description string   `json:"description"`
+	Tags        []string `json:"tags"`
+	Text        string   `json:"text"`
+	PayPalMail  string   `json:"payPalMail"`
+	Images      []string `json:"images"`
+}
