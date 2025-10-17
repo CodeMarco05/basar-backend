@@ -5,8 +5,9 @@ import (
 )
 
 type AppConfig struct {
-	Version string
-	Port    uint16
+	Version    string
+	Port       uint16
+	MongoDbURI string
 }
 
 var Config *AppConfig

@@ -29,7 +29,14 @@ func LoadApplicationConfig() {
 	}
 
 	config.Config = &config.AppConfig{
-		Version: os.Getenv("VERSION"),
+		Version: func() string {
+			res := os.Getenv("VERSION")
+			if res == "" {
+				logger.Error().Msg("VERSION environment variable is not set")
+				os.Exit(1)
+			}
+			return res
+		}(),
 		Port: func() uint16 {
 			res, err := strconv.ParseUint(os.Getenv("PORT"), 10, 16)
 			if err != nil {
@@ -37,6 +44,14 @@ func LoadApplicationConfig() {
 				os.Exit(1)
 			}
 			return uint16(res)
+		}(),
+		MongoDbURI: func() string {
+			res := os.Getenv("MONGODB_URI")
+			if res == "" {
+				logger.Error().Msg("MONGODB_URI environment variable is not set")
+				os.Exit(1)
+			}
+			return res
 		}(),
 	}
 
@@ -63,7 +78,7 @@ func LoadApplicationConfig() {
 	// ------------------------------------------------------------ //
 	// load the mongodb connection
 
-	config.MongoDB, err = db.InitMongoDB(os.Getenv("MONGODB_URI"), "bazzar")
+	config.MongoDB, err = db.InitMongoDB(config.Config.MongoDbURI, "bazzar")
 	if err != nil {
 		logger.Error().Msgf("Error setting up MongoDB connection: %v", err)
 		os.Exit(1)
