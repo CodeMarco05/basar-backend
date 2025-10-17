@@ -8,6 +8,7 @@ import (
 	"time"
 
 	"go.mongodb.org/mongo-driver/bson"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
@@ -149,23 +150,32 @@ func GetAllPosts(ctx context.Context, db *mongo.Database) ([]models.Post, error)
 
 // InsertPost inserts a new post into the posts collection
 // MongoDB will automatically generate an ObjectID for the _id field
-func InsertPost(ctx context.Context, db *mongo.Database, post models.Post) (string, error) {
+func InsertPost(ctx context.Context, db *mongo.Database, insertPost models.InsertPost) (string, error) {
 	collection := db.Collection("posts")
 
-	// Set the creation timestamp
-	post.CreatedAt = time.Now()
+	// Create a full Post object from the InsertPost data
+	post := models.Post{
+		Creator:     insertPost.Creator,
+		Title:       insertPost.Title,
+		Description: insertPost.Description,
+		Tags:        insertPost.Tags,
+		Text:        insertPost.Text,
+		PayPalMail:  insertPost.PayPalMail,
+		Images:      insertPost.Images,
+		CreatedAt:   time.Now(), // Set the creation timestamp
+	}
 
-	// Insert the post
+	// Insert the post (MongoDB will auto-generate the _id)
 	result, err := collection.InsertOne(ctx, post)
 	if err != nil {
 		return "", fmt.Errorf("failed to insert post: %w", err)
 	}
 
 	// Return the generated ObjectID as a string
-	insertedID, ok := result.InsertedID.(string)
+	insertedID, ok := result.InsertedID.(primitive.ObjectID)
 	if !ok {
-		return "", fmt.Errorf("failed to convert inserted ID to string")
+		return "", fmt.Errorf("failed to convert inserted ID to ObjectID")
 	}
 
-	return insertedID, nil
+	return insertedID.Hex(), nil
 }
