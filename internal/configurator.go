@@ -8,6 +8,7 @@ import (
 	"strconv"
 
 	"github.com/go-chi/chi/v5"
+	"github.com/go-chi/chi/v5/middleware"
 	"github.com/joho/godotenv"
 )
 
@@ -26,8 +27,6 @@ func LoadApplicationConfig() {
 		logger.Error().Msgf("Error loading .env file: %v", err)
 		os.Exit(1)
 	}
-
-	logger.Info().Msgf("16 bit max value %v")
 
 	Config = &AppConfig{
 		Version: os.Getenv("VERSION"),
@@ -48,15 +47,25 @@ func LoadApplicationConfig() {
 		os.Exit(1)
 	}
 	logger.Info().Msgf("Config: %v", string(configJson))
+
+	// ------------------------------------------------------------ //
+	// load the firebase config
+	logger.Info().Msg("Start connection to firebase")
+	err = InitFirebase()
+
+	if err != nil {
+		logger.Error().Msgf("Error initializing firebase: %v", err)
+		os.Exit(1)
+	}
+
+	logger.Info().Msg("Connection to firebase finished")
 }
 
 func ChiConfig() *chi.Mux {
 	r := chi.NewRouter()
 
 	// TODO implement own logger middle ware
-	// r.Use(middleware.Logger)
-
-	//
+	r.Use(middleware.Recoverer)
 
 	return r
 }
