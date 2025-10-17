@@ -1,0 +1,14 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    volumes:
+      # Mount source code for live reloading
+      - .:/app
+    environment:
+      - CGO_ENABLED=1
+    stdin_open: true
+    tty: true
