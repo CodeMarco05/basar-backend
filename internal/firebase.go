@@ -40,10 +40,13 @@ func InitFirebase() error {
 
 func AuthMiddleware(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		logger := GetLogger()
+
 		// Extract token from header
 		authHeader := r.Header.Get("Authorization")
 		if authHeader == "" || !strings.HasPrefix(authHeader, "Bearer ") {
-			http.Error(w, "Unauthorized", http.StatusUnauthorized)
+			logger.Info().Msg("Authorization header missing")
+			http.Error(w, "Unauthorized. The auth header is missing", http.StatusUnauthorized)
 			return
 		}
 
@@ -52,7 +55,8 @@ func AuthMiddleware(next http.Handler) http.Handler {
 		// Verify token
 		token, err := verifyToken(idToken)
 		if err != nil {
-			http.Error(w, "Unauthorized", http.StatusUnauthorized)
+			logger.Info().Err(err).Msg("Unauthorized access to Firebase API endpoint detected")
+			http.Error(w, "Unauthorized. The user has no access to Firebase", http.StatusUnauthorized)
 			return
 		}
 
