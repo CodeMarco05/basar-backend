@@ -4,7 +4,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
-	"ocm-go/internal/logging"
 	"os"
 	"strconv"
 
@@ -20,7 +19,7 @@ type AppConfig struct {
 var Config *AppConfig
 
 func LoadApplicationConfig() {
-	logger := logging.GetLogger()
+	logger := GetLogger()
 
 	err := godotenv.Load()
 	if err != nil {
@@ -55,13 +54,13 @@ func ChiConfig() *chi.Mux {
 	// TODO implement own logger middle ware
 	// r.Use(middleware.Logger)
 
-	RegisterAllEndpoints(r)
+	//
 
 	return r
 }
 
 func Serve(r *chi.Mux) {
-	l := logging.GetLogger()
+	l := GetLogger()
 
 	port := 3000
 
