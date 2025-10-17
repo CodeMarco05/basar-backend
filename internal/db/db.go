@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"hackathon-basar-backend/internal/logger"
 	"hackathon-basar-backend/internal/models"
-	"log"
 	"time"
 
 	"go.mongodb.org/mongo-driver/bson"
@@ -51,7 +50,7 @@ func InitMongoDB(uri string, databaseName string) (*mongo.Database, error) {
 		// Check the connection
 		err = client.Ping(context.TODO(), nil)
 		if err != nil {
-			log.Printf("Failed to ping MongoDB (attempt %d): %v", attempt, err)
+			logger.Error().Msgf("Failed to ping MongoDB (attempt %d): %v", attempt, err)
 			if attempt < maxRetries {
 				time.Sleep(retryDelay)
 				continue
@@ -59,7 +58,7 @@ func InitMongoDB(uri string, databaseName string) (*mongo.Database, error) {
 			return nil, fmt.Errorf("failed to ping MongoDB after %d attempts: %w", maxRetries, err)
 		}
 
-		log.Println("Successfully connected to MongoDB!")
+		logger.Info().Msg("Successfully connected to MongoDB!")
 		break
 	}
 
@@ -89,13 +88,15 @@ func HealthCheck(ctx context.Context, db *mongo.Database) error {
 
 // ensureCollectionsExist creates required collections if they don't already exist
 func ensureCollectionsExist(ctx context.Context, db *mongo.Database) error {
+	logger := logger.GetLogger()
+
 	// List existing collections
 	collections, err := db.ListCollectionNames(ctx, bson.M{})
 	if err != nil {
 		return fmt.Errorf("failed to list collections: %w", err)
 	}
 
-	log.Printf("Existing collections: %v", collections)
+	logger.Info().Msgf("Existing collections: %v", collections)
 
 	// Create a map for quick lookup
 	existingCollections := make(map[string]bool)
@@ -112,14 +113,14 @@ func ensureCollectionsExist(ctx context.Context, db *mongo.Database) error {
 	// Create missing collections
 	for _, collName := range requiredCollections {
 		if !existingCollections[collName] {
-			log.Printf("Creating collection: %s", collName)
+			logger.Info().Msgf("Creating collection: %s", collName)
 			err := db.CreateCollection(ctx, collName)
 			if err != nil {
 				return fmt.Errorf("failed to create collection %s: %w", collName, err)
 			}
-			log.Printf("Successfully created collection: %s", collName)
+			logger.Info().Msgf("Successfully created collection: %s", collName)
 		} else {
-			log.Printf("Collection already exists: %s", collName)
+			logger.Info().Msgf("Collection already exists: %s", collName)
 		}
 	}
 

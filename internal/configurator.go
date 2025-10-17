@@ -78,7 +78,7 @@ func ChiConfig() *chi.Mux {
 
 	r.Use(middleware.Logger)
 	r.Use(middleware.Recoverer)
-	r.Use(AuthMiddleware)
+	//r.Use(AuthMiddleware)
 	r.Get("/health", routes.HealthCheck)
 
 	r.Route("/api/v1", func(r chi.Router) {
