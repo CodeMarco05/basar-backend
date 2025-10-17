@@ -3,6 +3,7 @@ package internal
 import (
 	"encoding/json"
 	"fmt"
+	"hackathon-basar-backend/internal/db"
 	"net/http"
 	"os"
 	"strconv"
@@ -18,6 +19,7 @@ type AppConfig struct {
 }
 
 var Config *AppConfig
+var MongoDBClient *db.MongoDBClient
 
 func LoadApplicationConfig() {
 	logger := GetLogger()
