@@ -65,7 +65,11 @@ func ChiConfig() *chi.Mux {
 	r := chi.NewRouter()
 
 	// TODO implement own logger middle ware
-	r.Use(middleware.Recoverer)
+
+	r.Route("/api/v1", func(r chi.Router) {
+		r.Use(middleware.Recoverer)
+		r.Use(AuthMiddleware)
+	})
 
 	return r
 }
