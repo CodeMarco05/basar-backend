@@ -50,4 +50,4 @@ tmp/
 Thumbs.db
 
 # Firebase Service Account
-serviceAccountKey.json
+./serviceAccountKey.json
