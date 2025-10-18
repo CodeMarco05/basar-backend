@@ -226,7 +226,7 @@ func GetPostsByCreator(ctx context.Context, db *mongo.Database, creatorID string
 // UpdatePostByID updates a post by its MongoDB ObjectID after validating the creator
 // It checks if the post exists and if the creator matches before updating
 // Only updates the fields from InsertPost, leaving _id, creator, and created_at unchanged
-func UpdatePostByID(ctx context.Context, db *mongo.Database, postID string, creator string, updateData models.InsertPost) error {
+func UpdatePostByIdAndCreator(ctx context.Context, db *mongo.Database, postID string, creator string, updateData models.InsertPost) error {
 	collection := db.Collection("posts")
 
 	// Convert the string ID to MongoDB ObjectID
