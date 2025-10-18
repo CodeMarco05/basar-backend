@@ -1,19 +1,35 @@
-FROM golang:1.25.1
+# Build stage
+FROM golang:1.25-alpine AS builder
 
+# Install build dependencies
+RUN apk add --no-cache git ca-certificates
+
+# Set working directory
 WORKDIR /app
 
-# Install Air for live reloading
-RUN go install github.com/air-verse/air@latest
+# Copy go mod files
+COPY go.mod go.sum ./
 
-# Copy go.mod and go.sum first to leverage Docker layer caching
-COPY go.* ./
-
+# Download dependencies
 RUN go mod download
 
-# Copy the rest of the sources
+# Copy source code
 COPY . .
 
-EXPOSE 8080
+# Build the application
+RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o main .
 
-# Use Air for live reloading in development
-CMD ["air", "-c", ".air.toml"]
+# Final stage
+FROM alpine:latest
+
+WORKDIR /root/
+
+# Copy the binary from builder
+COPY --from=builder /app/main .
+COPY .env .
+COPY serviceAccountKey.json .
+
+EXPOSE 42000
+
+# Run the application
+CMD ["./main"]

@@ -1,4 +1,26 @@
 services:
+  backend:
+    container_name: backend
+    restart: always
+    image: marco1205/bazzar-backend
+    build:
+      context: .
+    environment:
+      - MONGODB_URI=mongodb://admin:password123@mongodb:27017/
+    env_file:
+      - .env
+    ports:
+      - "42000:42000"
+    depends_on:
+      - mongodb
+    networks:
+      - application-network
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:42000/health" ]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
   mongodb:
     image: mongo:7
     container_name: mongodb
@@ -10,10 +32,11 @@ services:
     ports:
       - "27017:27017"
     volumes:
-      #- mongodb_data:/data/db
+      - mongodb_data:/data/db
       #- ./init-mongo.js:/docker-entrypoint-initdb.d/init-mongo.js:ro
     networks:
       - mongo-network
+      - application-network
 
   mongo-express:
     image: mongo-express:latest
@@ -38,4 +61,6 @@ volumes:
 
 networks:
   mongo-network:
+    driver: bridge
+  application-network:
     driver: bridge
