@@ -106,7 +106,8 @@ func ChiConfig() *chi.Mux {
 
 		r.Route("/users", func(r chi.Router) {
 			r.Get("/{creatorId}/posts", users.GetPostsByCreator)
-			r.Patch("/{creatorId}/{postId}", users.PatchPostByIdAndCreator)
+			r.Patch("/{creatorId}/{postId}", users.PatchPostByIdAndCreatorId)
+			r.Delete("/{creatorId}/{postId}", users.DeletePostByIdAndCreatorId)
 		})
 	})
 
