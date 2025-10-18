@@ -332,11 +332,11 @@ func DeletePostByIdAndCreatorId(ctx context.Context, db *mongo.Database, postID 
 
 // AddCommentToPost appends a new comment to the comments array of a specific post
 // The comment's CreatedAt timestamp is set automatically
-func AddCommentToPost(ctx context.Context, db *mongo.Database, postID string, comment models.Comment) error {
+func AddCommentToPost(ctx context.Context, db *mongo.Database, postId string, comment models.Comment) error {
 	collection := db.Collection("posts")
 
 	// Convert the string ID to MongoDB ObjectID
-	objectID, err := primitive.ObjectIDFromHex(postID)
+	objectID, err := primitive.ObjectIDFromHex(postId)
 	if err != nil {
 		return fmt.Errorf("invalid post ID format: %w", err)
 	}
@@ -362,7 +362,46 @@ func AddCommentToPost(ctx context.Context, db *mongo.Database, postID string, co
 
 	// If no documents were matched, the post doesn't exist
 	if result.MatchedCount == 0 {
-		return fmt.Errorf("post not found with ID: %s", postID)
+		return fmt.Errorf("post not found with ID: %s", postId)
+	}
+
+	return nil
+}
+
+func DeleteCommentByPostIdCommentCreatorIdCommentId(ctx context.Context, db *mongo.Database, postId string, commentCreatorId string, commentId string) error {
+	collection := db.Collection("posts")
+
+	// Convert the string ID to MongoDB ObjectID
+	objectID, err := primitive.ObjectIDFromHex(postId)
+	if err != nil {
+		return fmt.Errorf("invalid post ID format: %w", err)
+	}
+
+	// Use $pull to remove the comment from the comments array
+	// Match both the comment ID and creator ID for security
+	update := bson.M{
+		"$pull": bson.M{
+			"comments": bson.M{
+				"id":        commentId,
+				"creatorId": commentCreatorId,
+			},
+		},
+	}
+
+	// Update the post
+	result, err := collection.UpdateOne(ctx, bson.M{"_id": objectID}, update)
+	if err != nil {
+		return fmt.Errorf("failed to delete comment from post: %w", err)
+	}
+
+	// If no documents were matched, the post doesn't exist
+	if result.MatchedCount == 0 {
+		return fmt.Errorf("post not found with Id: %s", postId)
+	}
+
+	// If matched but not modified, the comment wasn't found or didn't match the criteria
+	if result.ModifiedCount == 0 {
+		return fmt.Errorf("comment not found with Id: %s and creatorId: %s in post: %s", commentId, commentCreatorId, postId)
 	}
 
 	return nil
