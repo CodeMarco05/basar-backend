@@ -13,6 +13,9 @@
   - [Get Posts by Creator](#get-posts-by-creator)
   - [Update Post](#update-post)
   - [Delete Post](#delete-post)
+- [ICS Files](#ics-files)
+  - [Get All Available ICS Files](#get-all-available-ics-files)
+  - [Get ICS File](#get-ics-file)
 
 ---
 
@@ -507,6 +510,79 @@ Error (500 Internal Server Error):
 
 ---
 
+## ICS Files
+
+### Get All Available ICS Files
+
+**Endpoint:** `GET /api/v1/ics`
+
+**Description:** Retrieves a list of all available ICS (iCalendar) file names stored on the server.
+
+**Authentication:** Not required
+
+**Request:**
+```http
+GET /api/v1/ics
+```
+
+**Response:**
+
+Success (200 OK):
+```json
+{
+  "filenames": [
+    "A23a_5.ics",
+    "A23b_5.ics",
+    "A24a_3.ics",
+    "B23a_5.ics",
+    "I23a_5.ics",
+    "T23a_5.ics",
+    "W23a_5.ics"
+  ]
+}
+```
+
+Error (500 Internal Server Error):
+```
+Something went wrong while reading the storage dir
+```
+
+---
+
+### Get ICS File
+
+**Endpoint:** `GET /api/v1/ics/{fileName}`
+
+**Description:** Downloads a specific ICS (iCalendar) file by its filename.
+
+**Authentication:** Not required
+
+**Path Parameters:**
+- `fileName` (string, required): The name of the ICS file to download (e.g., "A23a_5.ics")
+
+**Request:**
+```http
+GET /api/v1/ics/A23a_5.ics
+```
+
+**Response:**
+
+Success (200 OK):
+- **Content-Type:** `application/octet-stream`
+- **Body:** The ICS file content
+
+Error (400 Bad Request):
+```
+Invalid request without fileName
+```
+
+Error (404 Not Found):
+```
+File does not exist
+```
+
+---
+
 ## Data Models
 
 ### Post Object
@@ -635,3 +711,5 @@ For validation errors:
 | GET | `/api/v1/users/{creatorId}/posts` | Get posts by creator |
 | PATCH | `/api/v1/users/{creatorId}/{postId}` | Update post |
 | DELETE | `/api/v1/users/{creatorId}/{postId}` | Delete post |
+| GET | `/api/v1/ics` | Get all available ICS file names |
+| GET | `/api/v1/ics/{fileName}` | Download specific ICS file |
