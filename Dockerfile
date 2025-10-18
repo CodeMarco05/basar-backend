@@ -29,8 +29,6 @@ WORKDIR /root/
 
 # Copy the binary from builder
 COPY --from=builder /app/main .
-COPY .env .
-COPY serviceAccountKey.json .
 
 EXPOSE 42000
 

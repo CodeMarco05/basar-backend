@@ -15,6 +15,9 @@ services:
       - "42000:42000"
     depends_on:
       - mongodb
+    volumes:
+      - ./.env:/app/.env
+      - ./serviceAccountKey.json:/app/serviceAccountKey.json
     networks:
       - application-network
     healthcheck:
