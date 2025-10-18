@@ -2,6 +2,8 @@ package posts
 
 import (
 	"encoding/json"
+	"errors"
+	"fmt"
 	"hackathon-basar-backend/internal/config"
 	"hackathon-basar-backend/internal/db"
 	"hackathon-basar-backend/internal/logger"
@@ -9,6 +11,7 @@ import (
 	"net/http"
 
 	"github.com/go-chi/chi/v5"
+	"github.com/go-playground/validator/v10"
 )
 
 func GetAllPosts(w http.ResponseWriter, r *http.Request) {
@@ -41,6 +44,34 @@ func InsertPost(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		log.Error().Msgf("Invalid request with body: %v", r.Body)
 		http.Error(w, "Invalid request body when transforming to the required object.", http.StatusBadRequest)
+		return
+	}
+
+	// Validate the struct
+	validate := validator.New()
+	if err := validate.Struct(post); err != nil {
+		log.Error().Msgf("Validation failed: %v", err)
+
+		// Get detailed validation errors
+		var validationErrors validator.ValidationErrors
+		errors.As(err, &validationErrors)
+		errorMessages := make(map[string]string)
+
+		for _, fieldError := range validationErrors {
+			errorMessages[fieldError.Field()] = fmt.Sprintf("Field '%s' failed validation: %s", fieldError.Field(), fieldError.Tag())
+		}
+
+		w.Header().Set("Content-Type", "application/json")
+		w.WriteHeader(http.StatusBadRequest)
+		err := json.NewEncoder(w).Encode(map[string]interface{}{
+			"error":  "Validation failed",
+			"fields": errorMessages,
+		})
+		if err != nil {
+			log.Error().Msgf("Writing to the host failed during transmitting: %v", err)
+			http.Error(w, "Failed to encode response", http.StatusInternalServerError)
+			return
+		}
 		return
 	}
 

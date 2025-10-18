@@ -3,9 +3,9 @@ package db
 import (
 	"context"
 	"fmt"
+	imageprocessing "hackathon-basar-backend/internal/image-processing"
 	"hackathon-basar-backend/internal/logger"
 	"hackathon-basar-backend/internal/models"
-	imageprocessing "hackathon-basar-backend/internal/image-processing"
 	"time"
 
 	"go.mongodb.org/mongo-driver/bson"
@@ -174,13 +174,15 @@ func InsertPost(ctx context.Context, db *mongo.Database, insertPost models.Inser
 	// Create a full Post object from the InsertPost data
 	post := models.Post{
 		CreatorId:   insertPost.CreatorId,
+		CreatorMail: insertPost.CreatorMail,
 		Title:       insertPost.Title,
 		Description: insertPost.Description,
 		Tags:        insertPost.Tags,
 		Text:        insertPost.Text,
 		PayPalMail:  insertPost.PayPalMail,
 		Images:      processedImages, // Use the processed images
-		CreatedAt:   time.Now(),      // Set the creation timestamp
+		Comments:    insertPost.Comments,
+		CreatedAt:   time.Now(), // Set the creation timestamp
 	}
 
 	// Insert the post (MongoDB will auto-generate the _id)
