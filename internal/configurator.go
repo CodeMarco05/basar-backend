@@ -62,7 +62,7 @@ func LoadApplicationConfig() {
 		IcsFileScrapeIntervalInSeconds: func() int64 {
 			res := os.Getenv("ICS_FILE_SCRAPE_INTERVAL")
 			if res == "" {
-				log.Error().Msg("MONGODB_URI environment variable is not set")
+				log.Error().Msg("ICS_FILE_SCRAPE_INTERVAL environment variable is not set")
 				os.Exit(1)
 			}
 			i, err := strconv.ParseInt(res, 10, 64)
