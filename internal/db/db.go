@@ -328,3 +328,38 @@ func DeletePostByIdAndCreatorId(ctx context.Context, db *mongo.Database, postID 
 
 	return nil
 }
+
+// AddCommentToPost appends a new comment to the comments array of a specific post
+// The comment's CreatedAt timestamp is set automatically
+func AddCommentToPost(ctx context.Context, db *mongo.Database, postID string, comment models.Comment) error {
+	collection := db.Collection("posts")
+
+	// Convert the string ID to MongoDB ObjectID
+	objectID, err := primitive.ObjectIDFromHex(postID)
+	if err != nil {
+		return fmt.Errorf("invalid post ID format: %w", err)
+	}
+
+	// Set the comment's creation timestamp
+	comment.CreatedAt = time.Now()
+
+	// Use $push to append the comment to the comments array
+	update := bson.M{
+		"$push": bson.M{
+			"comments": comment,
+		},
+	}
+
+	// Update the post
+	result, err := collection.UpdateOne(ctx, bson.M{"_id": objectID}, update)
+	if err != nil {
+		return fmt.Errorf("failed to add comment to post: %w", err)
+	}
+
+	// If no documents were matched, the post doesn't exist
+	if result.MatchedCount == 0 {
+		return fmt.Errorf("post not found with ID: %s", postID)
+	}
+
+	return nil
+}
