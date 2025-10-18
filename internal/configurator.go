@@ -12,9 +12,11 @@ import (
 	"net/http"
 	"os"
 	"strconv"
+	"time"
 
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
+	"github.com/go-chi/httprate"
 	"github.com/joho/godotenv"
 )
 
@@ -94,6 +96,7 @@ func ChiConfig() *chi.Mux {
 
 	r.Use(middleware.Logger)
 	r.Use(middleware.Recoverer)
+	r.Use(httprate.LimitByRealIP(100, 1*time.Minute))
 	//r.Use(AuthMiddleware)
 	r.Get("/health", routes.HealthCheck)
 
