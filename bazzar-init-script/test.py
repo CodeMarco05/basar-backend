@@ -43,7 +43,7 @@ test_posts = [
         "creatorMail": "dr.sauer@nordakademie.de",
         "title": "Komplette Universität zu verkaufen - Gebraucht aber funktional",
         "description": "NAK Elmshorn - Wegen Budgetkürzungen muss leider alles weg",
-        "tags": ["immobilien", "bildung", "schnäppchen", "selbstabholer"],
+        "tags": ["immobilien", "bildung", "schnäppchen", "selbstabholer", "wohnung"],
         "text": "Verkaufe hier meine gebrauchte Universität in Elmshorn. Zustand: Stark frequentiert, aber noch voll funktionsfähig. Enthält mehrere Hörsäle (Sitze teilweise durchgesessen), Mensa (Kaffeemaschine inkl.), Bibliothek (Bücher gegen Aufpreis), und diverse Büros (IKEA-Möbel bleiben drin). Perfekt für den ambitionierten Bildungsunternehmer oder als Studentenwohnheim-Conversion-Projekt. ACHTUNG: Studenten sind NICHT im Lieferumfang enthalten und müssen separat erworben werden. Abholung nur komplett, kein Teilverkauf einzelner Räume. VB 50 Mio. € - Verhandlungsbasis bei Barzahlung. PS: Parkplatzproblem wird kostenlos mitgeliefert.",
         "payPalMail": "prof.dr.sparsam@nordakademie.de",
         "images": ["./test-images/nak-elmshorn.jpg"]
