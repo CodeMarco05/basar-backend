@@ -126,19 +126,6 @@ test_posts = [
             "payPalMail": "whiskey.connoisseur@nordakademie.de",
             "images": ["./test-images/whiskey-tasting.jpg"]
         }
-    },
-    {
-        "name": "Create Post - Smart Watch",
-        "body": {
-            "creatorId": "firebase-user-010",
-            "creatorMail": "tech.savvy@example.com",
-            "title": "Apple Watch Series 8 - 45mm GPS",
-            "description": "Midnight aluminum with Sport Band, like new",
-            "tags": ["electronics", "smartwatch", "apple", "fitness"],
-            "text": "Apple Watch Series 8 in midnight aluminum, 45mm case with GPS. Includes original midnight Sport Band plus an extra braided loop. Screen protector applied since day one. Battery health at 100%. Includes charging cable and box.",
-            "payPalMail": "tech.savvy@example.com",
-            "images": ["./test-images/watch1.jpg", "./test-images/watch2.jpg", "./test-images/watch3.jpg"]
-        }
     }
 ]
 
