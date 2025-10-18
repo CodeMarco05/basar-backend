@@ -10,6 +10,19 @@ CREATE_POST_ENDPOINT = f"{BASE_URL}/api/v1/posts"
 
 # Test data
 test_posts = [
+{
+    "name": "Redbull dieb",
+    "body": {
+        "creatorId": "firebase-user-011",
+        "creatorMail": "unauffällige-person-mit-einem-sack@example.com",
+        "title": "viele Redbull-Dosen gefunden",
+        "description": "Habe zufällig sehr viele Redbull-Dosen gefunden, die anscheinend Müll waren",
+        "tags": ["getränke", "redbull", "energy-drink", "schnäppchen", "nordakademie", "definitiv-legal"],
+        "text": "Verkaufe hier ca. 40 Redbull-Dosen (leer), die ich rein zufällig in einem Raum gefunden habe. Keine Fragen zur Herkunft bitte - waren definitiv im Müll! P.S.: Falls jemand von der NAK-Verwaltung liest - war nur Spaß!",
+        "payPalMail": "unauffällige-person-mit-einem-sack@example.com",
+        "images": ["./test-images/redbull-dieb.jpg"]
+    }
+},
     {
     "name": "Treasure Hoard",
     "body": {
