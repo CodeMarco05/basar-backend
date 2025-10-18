@@ -66,6 +66,6 @@ func PatchPostByIdAndCreator(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	db.UpdatePostByIdAndCreator(r.Context(), config.MongoDB, postId, creatorId, post)
+	db.PatchPostByIdAndCreatorId(r.Context(), config.MongoDB, postId, creatorId, post)
 
 }
