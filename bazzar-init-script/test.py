@@ -89,55 +89,42 @@ test_posts = [
         }
     },
     {
-        "name": "Create Post - Gaming Console",
+        "name": "Führungsstile Seminar Platz",
         "body": {
-            "creatorId": "firebase-user-007",
-            "creatorMail": "gamer.paradise@example.com",
-            "title": "PlayStation 5 with 2 Controllers",
-            "description": "PS5 Disc Edition + extra controller + 5 games",
-            "tags": ["gaming", "console", "playstation", "electronics"],
-            "text": "PlayStation 5 Disc Edition in perfect condition. Includes 2 DualSense controllers, 5 popular games (God of War, Spider-Man, etc.), and all cables. Barely used, smoke-free home.",
-            "payPalMail": "gamer.paradise@example.com",
-            "images": ["./test-images/ps5.jpg"]
+            "creatorId": "firebase-user-015",
+            "creatorMail": "future.manager@nordakademie.de",
+            "title": "Seminar-Platz: Führungsstile - Von autoritär bis kooperativ",
+            "description": "Wochenend-Seminar zu modernen Führungsmethoden - Kann leider nicht teilnehmen",
+            "tags": ["seminar", "führung", "management", "nordakademie", "leadership"],
+            "text": "Biete meinen Seminar-Platz für 'Führungsstile - Von autoritär bis kooperativ' am kommenden Wochenende. Das Seminar behandelt verschiedene Führungsansätze: autoritär, kooperativ, laissez-faire und situative Führung. Inklusive Praxisübungen und Gruppenarbeiten. Biete 25€ für die Übernahme.",
+            "payPalMail": "future.manager@nordakademie.de",
+            "images": ["./test-images/the-office.jpeg"]
         }
     },
     {
-        "name": "Create Post - Coffee Machine",
+        "name": "Auto parken",
         "body": {
             "creatorId": "firebase-user-008",
-            "creatorMail": "coffee.addict@example.com",
-            "title": "De'Longhi Espresso Machine",
-            "description": "Professional-grade espresso and cappuccino maker",
-            "tags": ["appliances", "coffee", "kitchen", "delonghi"],
-            "text": "De'Longhi La Specialista Prestigio espresso machine. Dual heating system, built-in grinder, automatic milk frother. Used for 1 year, regularly cleaned and maintained. Perfect for coffee lovers.",
-            "payPalMail": "coffee.addict@example.com",
-            "images": ["./test-images/espresso1.jpg", "./test-images/espresso2.jpg"]
+            "creatorMail": "parking.instructor@nordakademie.de",
+            "title": "Einparkkurs für Erstsemester Studenten - KOSTENLOS!",
+            "description": "Falls ihr nach Erhalt eures Führerscheins nicht in der Lage seid zu parken, kann euch dieser kostenlose Kurs weiterhelfen.",
+            "tags": ["ersties", "autos", "parken", "nordakademie", "kostenlos", "führerschein"],
+            "text": "Biete kostenlosen Einparkkurs speziell für NAK-Erstsemester! Nach 5 Semestern Beobachtung des morgendlichen Chaos auf dem NAK-Parkplatz habe ich beschlossen: Es muss sich etwas ändern! 🚗 Im Kurs lernt ihr: Rückwärts einparken ohne 47 Anläufe, Parallelparken ohne Panikattacke, und wie man NICHT auf zwei Parkplätzen gleichzeitig steht. Bonus: Tipps zum Auffinden eures Autos nach der Vorlesung. Samstag 10 Uhr, NAK-Parkplatz (falls noch Platz ist 😅). Bringt euer Auto mit und eure Geduld. Anmeldung per Mail - Plätze begrenzt!",
+            "payPalMail": "parking.instructor@nordakademie.de",
+            "images": ["./test-images/auto-parken.png"]
         }
     },
     {
-        "name": "Create Post - Running Shoes",
+        "name": "Whiskey Tasting Event",
         "body": {
-            "creatorId": "firebase-user-009",
-            "creatorMail": "runner.pro@example.com",
-            "title": "Nike Air Zoom Pegasus 40 - Size 10.5",
-            "description": "Brand new, never worn, with box and tags",
-            "tags": ["shoes", "sports", "running", "nike"],
-            "text": "Nike Air Zoom Pegasus 40 running shoes in size US 10.5 / EU 44.5. Received as gift but wrong size. Never worn, still in original box with all tags. Color: Black/White.",
-            "payPalMail": "runner.pro@example.com",
-            "images": ["./test-images/shoes.jpg"]
-        }
-    },
-    {
-        "name": "Create Post - Smart Watch",
-        "body": {
-            "creatorId": "firebase-user-010",
-            "creatorMail": "tech.savvy@example.com",
-            "title": "Apple Watch Series 8 - 45mm GPS",
-            "description": "Midnight aluminum with Sport Band, like new",
-            "tags": ["electronics", "smartwatch", "apple", "fitness"],
-            "text": "Apple Watch Series 8 in midnight aluminum, 45mm case with GPS. Includes original midnight Sport Band plus an extra braided loop. Screen protector applied since day one. Battery health at 100%. Includes charging cable and box.",
-            "payPalMail": "tech.savvy@example.com",
-            "images": ["./test-images/watch1.jpg", "./test-images/watch2.jpg", "./test-images/watch3.jpg"]
+            "creatorId": "firebase-user-016",
+            "creatorMail": "whiskey.connoisseur@nordakademie.de",
+            "title": "Whiskey-Tasting Ticket abzugeben - Premium Single Malts",
+            "description": "Exklusives Tasting mit 6 schottischen Single Malts - Samstag Abend",
+            "tags": ["whiskey", "tasting", "event", "genuss", "nordakademie", "getränke"],
+            "text": "Verkaufe mein Ticket für das Premium Whiskey-Tasting am kommenden Samstag, 19 Uhr. Hatte mich riesig darauf gefreut, aber meine Freundin hat mir erklärt, dass 'Whiskey-Tasting' und 'Beziehung retten' am gleichen Abend nicht kompatibel sind 😅 Das Event umfasst 6 verschiedene schottische Single Malts (Islay, Speyside & Highland), professionelle Verkostungsleitung mit Hintergrundinfos zu Herstellung und Geschmacksnoten, dazu gibt es Wasser, Brot und Käse. Ursprünglicher Preis: 45€, verkaufe für 35€. Location: Gemütliche Whiskey-Bar in Elmshorn. Perfekt für Kenner oder Einsteiger! Bei Interesse schnell melden - das wird ein Genuss!",
+            "payPalMail": "whiskey.connoisseur@nordakademie.de",
+            "images": ["./test-images/whiskey-tasting.jpg"]
         }
     }
 ]
