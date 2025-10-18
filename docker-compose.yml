@@ -22,7 +22,7 @@ services:
       - application-network
     healthcheck:
       test: [ "CMD", "curl", "-f", "http://localhost:42000/health" ]
-      interval: 5s
+      interval: 30s
       timeout: 5s
       retries: 5
 

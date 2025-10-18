@@ -26,8 +26,8 @@ type ImageService struct {
 // for a hackathon/small project use case
 func NewImageService() *ImageService {
 	return &ImageService{
-		MaxWidth:     1920,
-		MaxHeight:    1080,
+		MaxWidth:     3840,
+		MaxHeight:    2160,
 		Quality:      65,
 		MaxSizeBytes: 5 * 1024 * 1024, // 5MB
 	}
