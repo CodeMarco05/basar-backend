@@ -131,11 +131,17 @@ func ensureCollectionsExist(ctx context.Context, db *mongo.Database) error {
 }
 
 // GetAllPosts retrieves all posts from the posts collection
+// Only returns the first image for each post to optimize payload size
 func GetAllPosts(ctx context.Context, db *mongo.Database) ([]models.Post, error) {
 	collection := db.Collection("posts")
 
-	// Find all posts
-	cursor, err := collection.Find(ctx, bson.M{})
+	// Create projection to only return the first image
+	opts := options.Find().SetProjection(bson.M{
+		"images": bson.M{"$slice": 1}, // Only return the first image
+	})
+
+	// Find all posts with projection
+	cursor, err := collection.Find(ctx, bson.M{}, opts)
 	if err != nil {
 		return nil, fmt.Errorf("failed to find posts: %w", err)
 	}
