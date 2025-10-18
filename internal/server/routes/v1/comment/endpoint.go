@@ -95,4 +95,10 @@ func DeleteCommentByPostIdCommentCreatorIdCommentId(w http.ResponseWriter, r *ht
 		return
 	}
 
+	err := db.DeleteCommentByPostIdCommentCreatorIdCommentId(r.Context(), config.MongoDB, postId, commentCreatorId, commentId)
+	if err != nil {
+		log.Error().Msgf("Failed to delete comment: %v", err)
+		http.Error(w, "Failed to delete comment", http.StatusInternalServerError)
+		return
+	}
 }
