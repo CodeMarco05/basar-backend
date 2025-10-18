@@ -6,7 +6,6 @@ import (
 	"hackathon-basar-backend/internal/server"
 	"net/http"
 	"os"
-	"sort"
 )
 
 func GetAllAvailableFileNames(w http.ResponseWriter, r *http.Request) {
@@ -19,22 +18,18 @@ func GetAllAvailableFileNames(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	var fileNames []string
+	var responseStruct = struct {
+		Filenames []string `json:"filenames"`
+	}{}
+
 	for _, entry := range entries {
-		fileNames = append(fileNames, entry.Name())
+		responseStruct.Filenames = append(responseStruct.Filenames, entry.Name())
 	}
 
-	sort.Strings(fileNames)
-	jsonResponse, err := json.Marshal(fileNames)
-	if err != nil {
-		log.Error().Msgf("Something went wrong while marshalling response: %s", err)
-		http.Error(w, "Something went wrong while marshalling response", http.StatusInternalServerError)
-		return
-	}
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusOK)
 
-	err = json.NewEncoder(w).Encode(string(jsonResponse))
+	err = json.NewEncoder(w).Encode(responseStruct)
 	if err != nil {
 		log.Error().Msgf("Invalid request without creatorId")
 		http.Error(w, "Invalid request without creatorId", http.StatusInternalServerError)
