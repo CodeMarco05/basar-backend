@@ -332,7 +332,7 @@ func DeletePostByIdAndCreatorId(ctx context.Context, db *mongo.Database, postID 
 
 // AddCommentToPost appends a new comment to the comments array of a specific post
 // The comment's CreatedAt timestamp is set automatically
-func AddCommentToPost(ctx context.Context, db *mongo.Database, postID string, comment models.CommentInsert) error {
+func AddCommentToPost(ctx context.Context, db *mongo.Database, postID string, comment models.Comment) error {
 	collection := db.Collection("posts")
 
 	// Convert the string ID to MongoDB ObjectID

@@ -19,13 +19,13 @@ type Post struct {
 }
 
 type InsertPost struct {
-	CreatorId   string          `bson:"creatorId" json:"creatorId" validate:"required"`
-	CreatorMail string          `bson:"creatorMail" json:"creatorMail" validate:"required"`
-	Title       string          `bson:"title" json:"title" validate:"required"`
-	Description string          `bson:"description" json:"description" validate:"required"`
-	Tags        []string        `bson:"tags" json:"tags" validate:"required"`
-	Text        string          `bson:"text" json:"text" validate:"required"`
-	PayPalMail  string          `bson:"payPalMail" json:"payPalMail" validate:"required,email"`
-	Comments    []CommentInsert `bson:"comments" json:"comments"`
-	Images      []string        `bson:"images" json:"images" validate:"required"`
+	CreatorId   string    `bson:"creatorId" json:"creatorId" validate:"required"`
+	CreatorMail string    `bson:"creatorMail" json:"creatorMail" validate:"required"`
+	Title       string    `bson:"title" json:"title" validate:"required"`
+	Description string    `bson:"description" json:"description" validate:"required"`
+	Tags        []string  `bson:"tags" json:"tags" validate:"required"`
+	Text        string    `bson:"text" json:"text" validate:"required"`
+	PayPalMail  string    `bson:"payPalMail" json:"payPalMail" validate:"required,email"`
+	Comments    []Comment `bson:"comments" json:"comments"`
+	Images      []string  `bson:"images" json:"images" validate:"required"`
 }
