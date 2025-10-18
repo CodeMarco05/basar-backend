@@ -7,6 +7,7 @@ services:
       context: .
     environment:
       - MONGODB_URI=mongodb://admin:password123@mongodb:27017/
+      - PORT=42000
     env_file:
       - .env
     ports:

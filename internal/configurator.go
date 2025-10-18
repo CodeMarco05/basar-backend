@@ -17,6 +17,7 @@ import (
 
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
+	"github.com/go-chi/cors"
 	"github.com/go-chi/httprate"
 	"github.com/joho/godotenv"
 )
@@ -95,10 +96,20 @@ func ChiConfig() *chi.Mux {
 
 	// TODO implement own logger middle ware
 
+	// CORS middleware - allow all origins
+	r.Use(cors.Handler(cors.Options{
+		AllowedOrigins:   []string{"*"},
+		AllowedMethods:   []string{"GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"},
+		AllowedHeaders:   []string{"Accept", "Authorization", "Content-Type", "X-CSRF-Token"},
+		ExposedHeaders:   []string{"Link"},
+		AllowCredentials: false,
+		MaxAge:           300,
+	}))
+
 	r.Use(middleware.Logger)
 	r.Use(middleware.Recoverer)
 	r.Use(httprate.LimitByRealIP(100, 1*time.Minute))
-	//r.Use(AuthMiddleware)
+	r.Use(AuthMiddleware)
 	r.Get("/health", routes.HealthCheck)
 
 	r.Route("/api/v1", func(r chi.Router) {
