@@ -36,3 +36,25 @@ func GetAllAvailableFileNames(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 }
+
+func GetIcsFile(w http.ResponseWriter, r *http.Request) {
+	log := logger.GetLogger()
+
+	fileName := r.PathValue("fileName")
+	if fileName == "" {
+		log.Error().Msgf("Invalid request without fileName")
+		http.Error(w, "Invalid request without fileName", http.StatusBadRequest)
+		return
+	}
+
+	filePath := server.FileStoragePath + "/" + fileName
+
+	if _, err := os.Stat(filePath); os.IsNotExist(err) {
+		log.Error().Msgf("File %s does not exist", fileName)
+		http.Error(w, "File does not exist", http.StatusNotFound)
+		return
+	}
+
+	w.Header().Set("Content-Type", "application/octet-stream")
+	http.ServeFile(w, r, filePath)
+}
