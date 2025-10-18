@@ -5,87 +5,87 @@ import os
 from pathlib import Path
 
 # Configuration
-BASE_URL = "http://localhost:8080"  # Change this to your server URL
+BASE_URL = "http://localhost:42001"  # Change this to your server URL
 CREATE_POST_ENDPOINT = f"{BASE_URL}/api/v1/posts"
 
 # Test data
 test_posts = [
     {
-        "name": "Create Post - Electronics",
+    "name": "Treasure Hoard",
+    "body": {
+        "creatorId": "firebase-user-011",
+        "creatorMail": "totally.not.a.dragon@example.com",
+        "title": "Genuine Dragon's Treasure - Must Sell ASAP",
+        "description": "Relocating to smaller cave, need to downsize collection",
+        "tags": ["gold", "treasure", "collectibles", "definitely-real"],
+        "text": "After 500 years of hoarding, I've finally admitted I have a problem. Selling my gold pile (approximately 3 tons). NO LOWBALLERS - I know what I have! Cash only. Serious inquiries only - if you're a knight, don't bother. Pick-up only from mountain cave. May throw in cursed amulet for free if you take it all. P.S. - Ignore the scorch marks on the coins.",
+        "payPalMail": "totally.not.a.dragon@example.com",
+        "images": ["./test-images/gold-pile.jpg"]
+    }
+    },
+    {
+    "name": "Uni zu verkaufen",
+    "body": {
+        "creatorId": "firebase-user-012",
+        "creatorMail": "prof.dr.sparsam@nordakademie.de",
+        "title": "Komplette Universität zu verkaufen - Gebraucht aber funktional",
+        "description": "NAK Elmshorn - Wegen Budgetkürzungen muss leider alles weg",
+        "tags": ["immobilien", "bildung", "schnäppchen", "selbstabholer"],
+        "text": "Verkaufe hier meine gebrauchte Universität in Elmshorn. Zustand: Stark frequentiert, aber noch voll funktionsfähig. Enthält mehrere Hörsäle (Sitze teilweise durchgesessen), Mensa (Kaffeemaschine inkl.), Bibliothek (Bücher gegen Aufpreis), und diverse Büros (IKEA-Möbel bleiben drin). Perfekt für den ambitionierten Bildungsunternehmer oder als Studentenwohnheim-Conversion-Projekt. ACHTUNG: Studenten sind NICHT im Lieferumfang enthalten und müssen separat erworben werden. Abholung nur komplett, kein Teilverkauf einzelner Räume. VB 50 Mio. € - Verhandlungsbasis bei Barzahlung. PS: Parkplatzproblem wird kostenlos mitgeliefert.",
+        "payPalMail": "prof.dr.sparsam@nordakademie.de",
+        "images": ["./test-images/nak-elmshorn.jpg"]
+    }
+    },
+{
+    "name": "Seminar Platz abzugeben",
+    "body": {
+        "creatorId": "firebase-user-013",
+        "creatorMail": "verzweifelter.student@nordakademie.de",
+        "title": "DRINGEND: Seminar-Platz abzugeben - Habe keine Zeit mehr",
+        "description": "Seminar 'Die Big Five der beruflichen Umgangsformen' - Kann leider nicht teilnehmen",
+        "tags": ["bildung", "seminar", "student", "nordakademie", "verzweifelt"],
+        "text": "Verkaufe meinen hart erkämpften Seminar-Platz für 'Die Big Five der beruflichen Umgangsformen' am kommenden Wochenende.",
+        "payPalMail": "verzweifelter.student@nordakademie.de",
+        "images": ["./test-images/seminar-banner.png"]
+    }
+},
+    {
+        "name": "Business Seminar Platz",
         "body": {
-            "creatorId": "firebase-user-001",
-            "creatorMail": "seller1@example.com",
-            "title": "MacBook Pro 2020 for Sale",
-            "description": "Excellent condition MacBook Pro with M1 chip",
-            "tags": ["electronics", "laptop", "apple"],
-            "text": "Selling my MacBook Pro 2020 with M1 chip, 16GB RAM, 512GB SSD. Barely used, comes with original charger and box. Perfect for students or professionals.",
-            "payPalMail": "seller1@example.com",
-            "images": ["./test-images/macbook.jpg"]
+            "creatorId": "firebase-user-014",
+            "creatorMail": "startup.dreams@nordakademie.de",
+            "title": "Seminar-Platz: Von der Businessidee zum Businessplan",
+            "description": "Seminar am Wochenende - Muss leider absagen",
+            "tags": ["seminar", "business", "nordakademie", "startup", "bildung"],
+            "text": "Biete Seminar-Platz für 'Von der Businessidee zum Businessplan' am kommenden Wochenende. Hatte mir vorgenommen, endlich meine geniale App-Idee umzusetzen, aber Netflix hat eine neue Serie rausgebracht. Vielleicht nächstes Semester. Der Seminarleiter soll super sein! Perfekt für angehende Gründer oder alle, die endlich ihre Ideen zu Papier bringen wollen. VB 20€ oder ein gutes Pitch-Deck als Tausch.",
+            "payPalMail": "startup.dreams@nordakademie.de",
+            "images": ["./test-images/tony-seminar.jpg"]
         }
     },
     {
-        "name": "Create Post - Furniture",
+        "name": "Transferleistung ghostwriter",
         "body": {
-            "creatorId": "firebase-user-002",
-            "creatorMail": "furniture.lover@example.com",
-            "title": "Vintage Wooden Desk",
-            "description": "Beautiful handcrafted oak desk from the 1960s",
-            "tags": ["furniture", "vintage", "desk", "wood"],
-            "text": "Stunning vintage oak desk in excellent condition. Features 3 drawers, brass handles, and a leather writing surface. Dimensions: 120cm x 60cm x 75cm.",
-            "payPalMail": "furniture.lover@example.com",
-            "images": ["./test-images/desk1.jpg", "./test-images/desk2.jpg"]
+            "creatorId": "firebase-user-014",
+            "creatorMail": "desperate.student@nordakademie.de",
+            "title": "Transferleistung Ghostwriter gesucht - DRINGEND!!!",
+            "description": "Suche jemanden, der meine TL schreibt - Deadline in 2 Wochen",
+            "tags": ["transferleistung", "ghostwriter", "nordakademie", "studium", "verzweifelt"],
+            "text": "Biete großzügige Bezahlung für jemanden, der meine Transferleistung zum Thema 'Digitalisierung in mittelständischen Unternehmen' schreibt. Hatte ursprünglich vor, das selbst zu machen, aber habe die letzten 3 Monate nur an meiner Work-Life-Balance gearbeitet (hauptsächlich Life, weniger Work). Anforderungen: 15-20 Seiten, wissenschaftlicher Stil, Minimum 10 Quellen. Mein Praxisunternehmen weiß von nichts und soll auch nichts erfahren! Biete: 300€ VB, ewige Dankbarkeit, oder meine Seminarplätze für die nächsten 2 Semester. WICHTIG: Plagiatsprüfung muss bestanden werden! Bei Interesse bitte diskrete Kontaktaufnahme. P.S.: Noten zwischen 2,0-3,0 sind völlig ok, will nicht auffallen. 😅",
+            "payPalMail": "desperate.student@nordakademie.de",
+            "images": ["./test-images/transferleistung-loewe.jpeg"]
         }
     },
     {
-        "name": "Create Post - Camera",
+        "name": "Emotionale Intelligenz Seminar Platz",
         "body": {
-            "creatorId": "firebase-user-003",
-            "creatorMail": "photo.pro@example.com",
-            "title": "Canon EOS R5 Camera Body",
-            "description": "Professional mirrorless camera, like new",
-            "tags": ["electronics", "camera", "photography", "canon"],
-            "text": "Canon EOS R5 body only, purchased 6 months ago. Shutter count under 5000. Includes original packaging, battery, charger, and strap. Perfect for professional photographers.",
-            "payPalMail": "photo.pro@example.com",
-            "images": ["./test-images/camera.jpg"]
-        }
-    },
-    {
-        "name": "Create Post - Bicycle",
-        "body": {
-            "creatorId": "firebase-user-004",
-            "creatorMail": "bike.enthusiast@example.com",
-            "title": "Mountain Bike - Trek X-Caliber 9",
-            "description": "2022 model, carbon frame, excellent condition",
-            "tags": ["sports", "bicycle", "outdoor", "trek"],
-            "text": "Trek X-Caliber 9 mountain bike from 2022. Carbon frame, 29-inch wheels, Shimano Deore XT components. Recently serviced, new tires. Size: Large (suitable for 180-195cm height).",
-            "payPalMail": "bike.enthusiast@example.com",
-            "images": ["./test-images/bike1.jpg", "./test-images/bike2.jpg", "./test-images/bike3.jpg"]
-        }
-    },
-    {
-        "name": "Create Post - Books",
-        "body": {
-            "creatorId": "firebase-user-005",
-            "creatorMail": "bookworm@example.com",
-            "title": "Computer Science Textbook Collection",
-            "description": "Set of 12 CS textbooks for university students",
-            "tags": ["books", "education", "computer-science"],
-            "text": "Selling my computer science textbook collection from university. Includes algorithms, data structures, operating systems, and more. All books in good condition with minimal highlighting. Perfect for CS students.",
-            "payPalMail": "bookworm@example.com",
-            "images": ["./test-images/books.jpg"]
-        }
-    },
-    {
-        "name": "Create Post - Guitar",
-        "body": {
-            "creatorId": "firebase-user-006",
-            "creatorMail": "musician123@example.com",
-            "title": "Fender Stratocaster Electric Guitar",
-            "description": "American Professional Series, Sunburst finish",
-            "tags": ["music", "guitar", "fender", "instruments"],
-            "text": "Fender American Professional Stratocaster in 3-Color Sunburst. Rosewood fingerboard, V-Mod pickups. Played regularly but well maintained. Comes with hardshell case and strap.",
-            "payPalMail": "musician123@example.com",
-            "images": ["./test-images/guitar1.jpg", "./test-images/guitar2.jpg"]
+            "creatorId": "firebase-user-014",
+            "creatorMail": "startup.dreams@nordakademie.de",
+            "title": "Emotionale Intelligenz Seminar Platz",
+            "description": "Seminar am Wochenende - Muss leider absagen",
+            "tags": ["seminar", "wochenende", "nordakademie"],
+            "text": "Biete Seminar-Platz für 'Emotionale Intelligenz' am kommenden Wochenende.",
+            "payPalMail": "startup.dreams@nordakademie.de",
+            "images": ["./test-images/wochenende-an-nak.jpg"]
         }
     },
     {
