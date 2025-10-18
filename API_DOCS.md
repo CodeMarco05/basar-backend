@@ -1,10 +1,5 @@
 # BASAR Backend API Documentation
 
-## Base URL
-```
-http://localhost:8080
-```
-
 ## Table of Contents
 - [Health Check](#health-check)
 - [Posts](#posts)
