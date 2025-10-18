@@ -222,3 +222,44 @@ func GetPostsByCreator(ctx context.Context, db *mongo.Database, creatorID string
 
 	return posts, nil
 }
+
+// UpdatePostByID updates a post by its MongoDB ObjectID after validating the creator
+// It checks if the post exists and if the creator matches before updating
+// Only updates the fields from InsertPost, leaving _id, creator, and created_at unchanged
+func UpdatePostByID(ctx context.Context, db *mongo.Database, postID string, creator string, updateData models.InsertPost) error {
+	collection := db.Collection("posts")
+
+	// Convert the string ID to MongoDB ObjectID
+	objectID, err := primitive.ObjectIDFromHex(postID)
+	if err != nil {
+		return fmt.Errorf("invalid post ID format: %w", err)
+	}
+
+	// Prepare the update document with only the editable fields from InsertPost
+	update := bson.M{
+		"$set": bson.M{
+			"title":       updateData.Title,
+			"description": updateData.Description,
+			"tags":        updateData.Tags,
+			"text":        updateData.Text,
+			"payPalMail":  updateData.PayPalMail,
+			"images":      updateData.Images,
+		},
+	}
+
+	// Update the post, matching both _id and creator for security
+	result, err := collection.UpdateOne(ctx, bson.M{
+		"_id":     objectID,
+		"creator": creator,
+	}, update)
+	if err != nil {
+		return fmt.Errorf("failed to update post: %w", err)
+	}
+
+	// If no documents were matched, the post doesn't exist or creator doesn't match
+	if result.MatchedCount == 0 {
+		return fmt.Errorf("post not found with ID: %s and creator: %s", postID, creator)
+	}
+
+	return nil
+}
