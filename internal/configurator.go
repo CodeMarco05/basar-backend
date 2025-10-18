@@ -9,6 +9,7 @@ import (
 	"hackathon-basar-backend/internal/server"
 	"hackathon-basar-backend/internal/server/routes"
 	"hackathon-basar-backend/internal/server/routes/v1/comment"
+	"hackathon-basar-backend/internal/server/routes/v1/ics"
 	"hackathon-basar-backend/internal/server/routes/v1/posts"
 	"hackathon-basar-backend/internal/server/routes/v1/users"
 	"net/http"
@@ -144,6 +145,10 @@ func ChiConfig() *chi.Mux {
 			r.Get("/{creatorId}/posts", users.GetPostsByCreator)
 			r.Patch("/{creatorId}/{postId}", users.PatchPostByIdAndCreatorId)
 			r.Delete("/{creatorId}/{postId}", users.DeletePostByIdAndCreatorId)
+		})
+
+		r.Route("/ics", func(r chi.Router) {
+			r.Get("/", ics.GetAllAvailableFileNames)
 		})
 	})
 

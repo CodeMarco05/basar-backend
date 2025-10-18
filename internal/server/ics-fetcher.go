@@ -20,20 +20,20 @@ var availableFiles = []string{
 	"W24a_3", "W24b_3", "W24c_3", "W24d_3", "W24e_3",
 }
 
-var fileStoragePath = "./ics-files"
+var FileStoragePath = "./ics-files"
 
 func IcsFetcherSetupAndStart() {
 	log := logger.GetLogger()
 
 	// remove the storage path if it exists
-	err := os.RemoveAll(fileStoragePath)
+	err := os.RemoveAll(FileStoragePath)
 	if err != nil {
 		log.Error().Msgf("Error removing files: %v", err)
 		return
 	}
 
 	// create a local path storage path
-	err = os.MkdirAll(fileStoragePath, os.ModePerm)
+	err = os.MkdirAll(FileStoragePath, os.ModePerm)
 	if err != nil {
 		log.Error().Msgf("Error creating directory: %v", err)
 		os.Exit(1)
@@ -90,7 +90,7 @@ func icsFetcher() {
 
 		// Full path to save file
 		entryWithFileExtension := entry + ".ics"
-		fullPath := filepath.Join(fileStoragePath, entryWithFileExtension)
+		fullPath := filepath.Join(FileStoragePath, entryWithFileExtension)
 
 		outFile, err := os.Create(fullPath)
 		if err != nil {
