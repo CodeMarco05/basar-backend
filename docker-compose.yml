@@ -9,6 +9,7 @@ services:
       - MONGODB_URI=mongodb://admin:password123@mongodb:27017/
       - PORT=42000
       - VERSION=1.2.3-Snapshot
+      - ICS_FILE_SCRAPE_INTERVAL=300
     env_file:
       - .env
     ports:

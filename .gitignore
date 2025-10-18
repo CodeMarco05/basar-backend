@@ -51,3 +51,6 @@ Thumbs.db
 
 # Firebase Service Account
 serviceAccountKey.json
+
+# ics file storage
+ics-files

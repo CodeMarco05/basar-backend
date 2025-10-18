@@ -6,6 +6,7 @@ import (
 	"hackathon-basar-backend/internal/config"
 	"hackathon-basar-backend/internal/db"
 	"hackathon-basar-backend/internal/logger"
+	"hackathon-basar-backend/internal/server"
 	"hackathon-basar-backend/internal/server/routes"
 	"hackathon-basar-backend/internal/server/routes/v1/comment"
 	"hackathon-basar-backend/internal/server/routes/v1/posts"
@@ -57,6 +58,19 @@ func LoadApplicationConfig() {
 				os.Exit(1)
 			}
 			return res
+		}(),
+		IcsFileScrapeIntervalInSeconds: func() int64 {
+			res := os.Getenv("ICS_FILE_SCRAPE_INTERVAL")
+			if res == "" {
+				log.Error().Msg("MONGODB_URI environment variable is not set")
+				os.Exit(1)
+			}
+			i, err := strconv.ParseInt(res, 10, 64)
+			if err != nil {
+				log.Error().Msgf("Error parsing ICS_FILE_SCRAPE_INTERVAL: %v", err)
+				os.Exit(1)
+			}
+			return i
 		}(),
 	}
 
@@ -132,6 +146,9 @@ func ChiConfig() *chi.Mux {
 			r.Delete("/{creatorId}/{postId}", users.DeletePostByIdAndCreatorId)
 		})
 	})
+
+	// -------------------------- setup ics file fetcher -------------------------- //
+	server.IcsFetcherSetupAndStart()
 
 	return r
 }
