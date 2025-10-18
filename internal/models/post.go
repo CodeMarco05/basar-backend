@@ -6,7 +6,7 @@ import (
 
 type Post struct {
 	ID          string    `bson:"_id,omitempty" json:"id,omitempty"`
-	CreatorId   string    `bson:"creatorId" json:"creator"`
+	CreatorId   string    `bson:"creatorId" json:"creatorId"`
 	Title       string    `bson:"title" json:"title"`
 	Description string    `bson:"description" json:"description"`
 	Tags        []string  `bson:"tags" json:"tags"`
@@ -17,11 +17,11 @@ type Post struct {
 }
 
 type InsertPost struct {
-	CreatorId   string   `json:"creatorId"`
-	Title       string   `json:"title"`
-	Description string   `json:"description"`
-	Tags        []string `json:"tags"`
-	Text        string   `json:"text"`
-	PayPalMail  string   `json:"payPalMail"`
-	Images      []string `json:"images"`
+	CreatorId   string   `bson:"creatorId" json:"creatorId" validate:"required"`
+	Title       string   `bson:"title" json:"title" validate:"required"`
+	Description string   `bson:"description" json:"description" validate:"required"`
+	Tags        []string `bson:"tags" json:"tags" validate:"required"`
+	Text        string   `bson:"text" json:"text" validate:"required"`
+	PayPalMail  string   `bson:"payPalMail" json:"payPalMail" validate:"required,email"`
+	Images      []string `bson:"images" json:"images" validate:"required"`
 }
