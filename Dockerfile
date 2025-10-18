@@ -25,7 +25,7 @@ FROM alpine:latest
 # Install curl for healthcheck
 RUN apk --no-cache add curl
 
-WORKDIR /root/
+WORKDIR /app
 
 # Copy the binary from builder
 COPY --from=builder /app/main .
