@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"hackathon-basar-backend/internal/logger"
 	"hackathon-basar-backend/internal/models"
+	imageprocessing "hackathon-basar-backend/internal/image-processing"
 	"time"
 
 	"go.mongodb.org/mongo-driver/bson"
@@ -150,8 +151,25 @@ func GetAllPosts(ctx context.Context, db *mongo.Database) ([]models.Post, error)
 
 // InsertPost inserts a new post into the posts collection
 // MongoDB will automatically generate an ObjectID for the _id field
+// Images in the InsertPost are expected to be base64-encoded strings (without data URI prefix)
+// and will be processed (resized, optimized) before storage
 func InsertPost(ctx context.Context, db *mongo.Database, insertPost models.InsertPost) (string, error) {
 	collection := db.Collection("posts")
+
+	// Initialize image processing service
+	imageService := imageprocessing.NewImageService()
+
+	// Process each image
+	processedImages := make([]string, len(insertPost.Images))
+	for i, base64Image := range insertPost.Images {
+		// Process and encode the image (resize, optimize)
+		// Using a generic filename since we're working with base64 strings
+		processed, err := imageService.ProcessAndEncodeImage(base64Image, "image.jpg")
+		if err != nil {
+			return "", fmt.Errorf("failed to process image %d: %w", i, err)
+		}
+		processedImages[i] = processed
+	}
 
 	// Create a full Post object from the InsertPost data
 	post := models.Post{
@@ -161,8 +179,8 @@ func InsertPost(ctx context.Context, db *mongo.Database, insertPost models.Inser
 		Tags:        insertPost.Tags,
 		Text:        insertPost.Text,
 		PayPalMail:  insertPost.PayPalMail,
-		Images:      insertPost.Images,
-		CreatedAt:   time.Now(), // Set the creation timestamp
+		Images:      processedImages, // Use the processed images
+		CreatedAt:   time.Now(),      // Set the creation timestamp
 	}
 
 	// Insert the post (MongoDB will auto-generate the _id)
@@ -226,6 +244,8 @@ func GetPostsByCreator(ctx context.Context, db *mongo.Database, creatorId string
 // UpdatePostByID updates a post by its MongoDB ObjectID after validating the creator
 // It checks if the post exists and if the creator matches before updating
 // Only updates the fields from InsertPost, leaving _id, creator, and created_at unchanged
+// Images in the updateData are expected to be base64-encoded strings (without data URI prefix)
+// and will be processed (resized, optimized) before storage
 func PatchPostByIdAndCreatorId(ctx context.Context, db *mongo.Database, postID string, creatorId string, updateData models.InsertPost) error {
 	collection := db.Collection("posts")
 
@@ -233,6 +253,21 @@ func PatchPostByIdAndCreatorId(ctx context.Context, db *mongo.Database, postID s
 	objectID, err := primitive.ObjectIDFromHex(postID)
 	if err != nil {
 		return fmt.Errorf("invalid post ID format: %w", err)
+	}
+
+	// Initialize image processing service
+	imageService := imageprocessing.NewImageService()
+
+	// Process each image
+	processedImages := make([]string, len(updateData.Images))
+	for i, base64Image := range updateData.Images {
+		// Process and encode the image (resize, optimize)
+		// Using a generic filename since we're working with base64 strings
+		processed, err := imageService.ProcessAndEncodeImage(base64Image, "image.jpg")
+		if err != nil {
+			return fmt.Errorf("failed to process image %d: %w", i, err)
+		}
+		processedImages[i] = processed
 	}
 
 	// Prepare the update document with only the editable fields from InsertPost
@@ -243,7 +278,7 @@ func PatchPostByIdAndCreatorId(ctx context.Context, db *mongo.Database, postID s
 			"tags":        updateData.Tags,
 			"text":        updateData.Text,
 			"payPalMail":  updateData.PayPalMail,
-			"images":      updateData.Images,
+			"images":      processedImages, // Use the processed images
 		},
 	}
 
