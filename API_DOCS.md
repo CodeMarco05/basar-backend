@@ -6,6 +6,9 @@
   - [Get All Posts](#get-all-posts)
   - [Get Single Post](#get-single-post)
   - [Create Post](#create-post)
+- [Comments](#comments)
+  - [Create Comment](#create-comment)
+  - [Delete Comment](#delete-comment)
 - [User Posts](#user-posts)
   - [Get Posts by Creator](#get-posts-by-creator)
   - [Update Post](#update-post)
@@ -198,6 +201,117 @@ Error (500 Internal Server Error):
 {
   "error": "Internal Server Error"
 }
+```
+
+---
+
+## Comments
+
+### Create Comment
+
+**Endpoint:** `POST /api/v1/posts/{postId}/comments`
+
+**Description:** Creates a new comment on a specific post.
+
+**Authentication:** Not required
+
+**Path Parameters:**
+- `postId` (string, required): MongoDB ObjectId of the post
+
+**Headers:**
+```
+Content-Type: application/json
+```
+
+**Request Body:**
+```json
+{
+  "creatorId": "firebaseUUID",
+  "message": "Great item! Is it still available?",
+  "commenterMail": "commenter@example.com",
+  "commenterName": "John Doe"
+}
+```
+
+**Field Requirements:**
+- `creatorId` (string, required): Firebase UUID of the comment creator
+- `message` (string, required): The comment text/message
+- `commenterMail` (string, required): Email address of the commenter
+- `commenterName` (string, required): Display name of the commenter
+
+**Response:**
+
+Success (200 OK):
+```
+(empty response body)
+```
+
+Error (400 Bad Request):
+```
+postId is required
+```
+or
+```
+comment is required
+```
+or
+```json
+{
+  "error": "Validation failed",
+  "fields": {
+    "Message": "Field 'Message' failed validation: required"
+  }
+}
+```
+
+Error (500 Internal Server Error):
+```
+Failed to create comment
+```
+
+---
+
+### Delete Comment
+
+**Endpoint:** `DELETE /api/v1/posts/{postId}/comments/{commentId}/{commentCreatorId}`
+
+**Description:** Deletes a specific comment from a post. Only the comment creator can delete their own comment.
+
+**Authentication:** Not required
+
+**Path Parameters:**
+- `postId` (string, required): MongoDB ObjectId of the post
+- `commentId` (string, required): UUID of the comment to delete
+- `commentCreatorId` (string, required): Firebase UUID of the comment creator
+
+**Request:**
+```http
+DELETE /api/v1/posts/507f1f77bcf86cd799439011/comments/comment-uuid-123/firebaseUUID
+```
+
+**Response:**
+
+Success (200 OK):
+```
+(empty response body)
+```
+
+Error (400 Bad Request):
+```
+postId is required
+```
+or
+```
+commentCreatorId is required
+```
+or
+```
+commentId is required
+```
+
+Error (500 Internal Server Error):
+```
+Failed to delete comment
 ```
 
 ---
@@ -408,6 +522,18 @@ Error (500 Internal Server Error):
 }
 ```
 
+### Comment Object
+```json
+{
+  "id": "string (UUID)",
+  "creatorId": "string (Firebase UUID)",
+  "message": "string",
+  "commenterMail": "string (email format)",
+  "commenterName": "string",
+  "createdAt": "timestamp (ISO 8601)"
+}
+```
+
 ---
 
 ## Validation Rules
@@ -476,6 +602,8 @@ For validation errors:
 | GET | `/api/v1/posts` | Get all posts |
 | GET | `/api/v1/posts/{postId}` | Get single post |
 | POST | `/api/v1/posts` | Create new post |
+| POST | `/api/v1/posts/{postId}/comments` | Create comment on post |
+| DELETE | `/api/v1/posts/{postId}/comments/{commentId}/{commentCreatorId}` | Delete comment |
 | GET | `/api/v1/users/{creatorId}/posts` | Get posts by creator |
 | PATCH | `/api/v1/users/{creatorId}/{postId}` | Update post |
 | DELETE | `/api/v1/users/{creatorId}/{postId}` | Delete post |
