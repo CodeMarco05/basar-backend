@@ -66,14 +66,6 @@ func InsertPost(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 }
-func DeletePost(w http.ResponseWriter, r *http.Request) {
-	/*log := logger.GetLogger()
-
-	postToDelete := struct {
-		ID string `json:"id"`
-	}{}*/
-}
-func UpdatePost(w http.ResponseWriter, r *http.Request) {}
 
 func GetPost(w http.ResponseWriter, r *http.Request) {
 	log := logger.GetLogger()
