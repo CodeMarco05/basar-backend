@@ -77,10 +77,15 @@ func PatchPostByIdAndCreatorId(w http.ResponseWriter, r *http.Request) {
 
 		w.Header().Set("Content-Type", "application/json")
 		w.WriteHeader(http.StatusBadRequest)
-		json.NewEncoder(w).Encode(map[string]interface{}{
+		err := json.NewEncoder(w).Encode(map[string]interface{}{
 			"error":  "Validation failed",
 			"fields": errorMessages,
 		})
+		if err != nil {
+			log.Error().Msgf("Writing to the host failed during transmitting: %v", err)
+			http.Error(w, "Failed to encode response", http.StatusInternalServerError)
+			return
+		}
 		return
 	}
 
