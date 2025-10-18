@@ -2,6 +2,7 @@ package users
 
 import (
 	"encoding/json"
+	"errors"
 	"fmt"
 	"hackathon-basar-backend/internal/config"
 	"hackathon-basar-backend/internal/db"
@@ -68,7 +69,8 @@ func PatchPostByIdAndCreatorId(w http.ResponseWriter, r *http.Request) {
 		log.Error().Msgf("Validation failed: %v", err)
 
 		// Get detailed validation errors
-		validationErrors := err.(validator.ValidationErrors)
+		var validationErrors validator.ValidationErrors
+		errors.As(err, &validationErrors)
 		errorMessages := make(map[string]string)
 
 		for _, fieldError := range validationErrors {
