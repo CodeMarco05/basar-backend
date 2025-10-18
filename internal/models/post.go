@@ -6,7 +6,7 @@ import (
 
 type Post struct {
 	ID          string    `bson:"_id,omitempty" json:"id,omitempty"`
-	Creator     string    `bson:"creator" json:"creator"`
+	CreatorId   string    `bson:"creatorId" json:"creator"`
 	Title       string    `bson:"title" json:"title"`
 	Description string    `bson:"description" json:"description"`
 	Tags        []string  `bson:"tags" json:"tags"`
@@ -17,7 +17,7 @@ type Post struct {
 }
 
 type InsertPost struct {
-	Creator     string   `json:"creator"`
+	CreatorId   string   `json:"creatorId"`
 	Title       string   `json:"title"`
 	Description string   `json:"description"`
 	Tags        []string `json:"tags"`

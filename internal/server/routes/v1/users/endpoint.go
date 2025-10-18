@@ -40,7 +40,7 @@ func GetPostsByCreator(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func UpdatePostByIdAndCreator(w http.ResponseWriter, r *http.Request) {
+func PatchPostByIdAndCreator(w http.ResponseWriter, r *http.Request) {
 	log := logger.GetLogger()
 
 	postId := chi.URLParam(r, "postId")
@@ -65,5 +65,7 @@ func UpdatePostByIdAndCreator(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Invalid request body when transforming to the required object.", http.StatusBadRequest)
 		return
 	}
+
+	db.UpdatePostByIdAndCreator(r.Context(), config.MongoDB, postId, creatorId, post)
 
 }
