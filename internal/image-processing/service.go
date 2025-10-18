@@ -28,7 +28,7 @@ func NewImageService() *ImageService {
 	return &ImageService{
 		MaxWidth:     1920,
 		MaxHeight:    1080,
-		Quality:      85,
+		Quality:      65,
 		MaxSizeBytes: 5 * 1024 * 1024, // 5MB
 	}
 }
