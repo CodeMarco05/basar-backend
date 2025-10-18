@@ -14,6 +14,7 @@ test_posts = [
         "name": "Create Post - Electronics",
         "body": {
             "creatorId": "firebase-user-001",
+            "creatorMail": "seller1@example.com",
             "title": "MacBook Pro 2020 for Sale",
             "description": "Excellent condition MacBook Pro with M1 chip",
             "tags": ["electronics", "laptop", "apple"],
@@ -26,6 +27,7 @@ test_posts = [
         "name": "Create Post - Furniture",
         "body": {
             "creatorId": "firebase-user-002",
+            "creatorMail": "furniture.lover@example.com",
             "title": "Vintage Wooden Desk",
             "description": "Beautiful handcrafted oak desk from the 1960s",
             "tags": ["furniture", "vintage", "desk", "wood"],
@@ -38,6 +40,7 @@ test_posts = [
         "name": "Create Post - Camera",
         "body": {
             "creatorId": "firebase-user-003",
+            "creatorMail": "photo.pro@example.com",
             "title": "Canon EOS R5 Camera Body",
             "description": "Professional mirrorless camera, like new",
             "tags": ["electronics", "camera", "photography", "canon"],
@@ -50,6 +53,7 @@ test_posts = [
         "name": "Create Post - Bicycle",
         "body": {
             "creatorId": "firebase-user-004",
+            "creatorMail": "bike.enthusiast@example.com",
             "title": "Mountain Bike - Trek X-Caliber 9",
             "description": "2022 model, carbon frame, excellent condition",
             "tags": ["sports", "bicycle", "outdoor", "trek"],
@@ -62,6 +66,7 @@ test_posts = [
         "name": "Create Post - Books",
         "body": {
             "creatorId": "firebase-user-005",
+            "creatorMail": "bookworm@example.com",
             "title": "Computer Science Textbook Collection",
             "description": "Set of 12 CS textbooks for university students",
             "tags": ["books", "education", "computer-science"],
@@ -74,6 +79,7 @@ test_posts = [
         "name": "Create Post - Guitar",
         "body": {
             "creatorId": "firebase-user-006",
+            "creatorMail": "musician123@example.com",
             "title": "Fender Stratocaster Electric Guitar",
             "description": "American Professional Series, Sunburst finish",
             "tags": ["music", "guitar", "fender", "instruments"],
@@ -86,6 +92,7 @@ test_posts = [
         "name": "Create Post - Gaming Console",
         "body": {
             "creatorId": "firebase-user-007",
+            "creatorMail": "gamer.paradise@example.com",
             "title": "PlayStation 5 with 2 Controllers",
             "description": "PS5 Disc Edition + extra controller + 5 games",
             "tags": ["gaming", "console", "playstation", "electronics"],
@@ -98,6 +105,7 @@ test_posts = [
         "name": "Create Post - Coffee Machine",
         "body": {
             "creatorId": "firebase-user-008",
+            "creatorMail": "coffee.addict@example.com",
             "title": "De'Longhi Espresso Machine",
             "description": "Professional-grade espresso and cappuccino maker",
             "tags": ["appliances", "coffee", "kitchen", "delonghi"],
@@ -110,6 +118,7 @@ test_posts = [
         "name": "Create Post - Running Shoes",
         "body": {
             "creatorId": "firebase-user-009",
+            "creatorMail": "runner.pro@example.com",
             "title": "Nike Air Zoom Pegasus 40 - Size 10.5",
             "description": "Brand new, never worn, with box and tags",
             "tags": ["shoes", "sports", "running", "nike"],
@@ -122,6 +131,7 @@ test_posts = [
         "name": "Create Post - Smart Watch",
         "body": {
             "creatorId": "firebase-user-010",
+            "creatorMail": "tech.savvy@example.com",
             "title": "Apple Watch Series 8 - 45mm GPS",
             "description": "Midnight aluminum with Sport Band, like new",
             "tags": ["electronics", "smartwatch", "apple", "fitness"],
