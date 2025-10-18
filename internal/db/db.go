@@ -412,3 +412,50 @@ func DeleteCommentByPostIdCommentCreatorIdCommentId(ctx context.Context, db *mon
 
 	return nil
 }
+
+// GetAllTags retrieves all unique tags from all posts in the collection
+// Returns a deduplicated list of tag strings
+func GetAllTags(ctx context.Context, db *mongo.Database) ([]string, error) {
+	collection := db.Collection("posts")
+
+	// Use MongoDB aggregation to get distinct tags
+	pipeline := mongo.Pipeline{
+		// Unwind the tags array to create a document for each tag
+		bson.D{{Key: "$unwind", Value: "$tags"}},
+		// Group by tag to get unique values
+		bson.D{{Key: "$group", Value: bson.D{
+			{Key: "_id", Value: "$tags"},
+		}}},
+		// Sort tags alphabetically
+		bson.D{{Key: "$sort", Value: bson.D{{Key: "_id", Value: 1}}}},
+	}
+
+	cursor, err := collection.Aggregate(ctx, pipeline)
+	if err != nil {
+		return nil, fmt.Errorf("failed to aggregate tags: %w", err)
+	}
+	defer cursor.Close(ctx)
+
+	// Extract the tags from the aggregation results
+	var tags []string
+	for cursor.Next(ctx) {
+		var result struct {
+			ID string `bson:"_id"`
+		}
+		if err := cursor.Decode(&result); err != nil {
+			return nil, fmt.Errorf("failed to decode tag: %w", err)
+		}
+		tags = append(tags, result.ID)
+	}
+
+	if err := cursor.Err(); err != nil {
+		return nil, fmt.Errorf("cursor error: %w", err)
+	}
+
+	// Return empty slice instead of nil if no tags found
+	if tags == nil {
+		tags = []string{}
+	}
+
+	return tags, nil
+}
