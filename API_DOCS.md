@@ -165,8 +165,8 @@ Content-Type: application/json
   "text": "This is a rare vintage camera from the 1970s. It has been well maintained and comes with the original leather case. Perfect for collectors or photography enthusiasts.",
   "payPalMail": "seller@example.com",
   "images": [
-    "https://example.com/image1.jpg",
-    "https://example.com/image2.jpg"
+    "Base64 image1",
+    "Base64 image2"
   ]
 }
 ```
@@ -348,8 +348,7 @@ Success (200 OK):
     "text": "Detailed description of the camera...",
     "payPalMail": "seller@example.com",
     "images": [
-      "https://example.com/image1.jpg",
-      "https://example.com/image2.jpg"
+      "base64 image1"
     ],
     "created_at": "2024-01-15T10:30:00Z"
   }
@@ -399,9 +398,8 @@ Content-Type: application/json
   "text": "Updated description with new pricing information...",
   "payPalMail": "seller@example.com",
   "images": [
-    "https://example.com/image1.jpg",
-    "https://example.com/image2.jpg",
-    "https://example.com/image3.jpg"
+    "base64 image1",
+    "base64 image2"
   ]
 }
 ```
@@ -504,7 +502,7 @@ Error (500 Internal Server Error):
   "tags": ["string"],
   "text": "string",
   "payPalMail": "string (email format)",
-  "images": ["string (URLs)"],
+  "images": ["string (Base64)"],
   "created_at": "timestamp (ISO 8601)"
 }
 ```
