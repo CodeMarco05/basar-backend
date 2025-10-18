@@ -3,13 +3,14 @@ package users
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/go-chi/chi/v5"
-	"github.com/go-playground/validator/v10"
 	"hackathon-basar-backend/internal/config"
 	"hackathon-basar-backend/internal/db"
 	"hackathon-basar-backend/internal/logger"
 	"hackathon-basar-backend/internal/models"
 	"net/http"
+
+	"github.com/go-chi/chi/v5"
+	"github.com/go-playground/validator/v10"
 )
 
 func GetPostsByCreator(w http.ResponseWriter, r *http.Request) {
@@ -41,7 +42,7 @@ func GetPostsByCreator(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func PatchPostByIdAndCreator(w http.ResponseWriter, r *http.Request) {
+func PatchPostByIdAndCreatorId(w http.ResponseWriter, r *http.Request) {
 	log := logger.GetLogger()
 
 	postId := chi.URLParam(r, "postId")
@@ -76,10 +77,15 @@ func PatchPostByIdAndCreator(w http.ResponseWriter, r *http.Request) {
 
 		w.Header().Set("Content-Type", "application/json")
 		w.WriteHeader(http.StatusBadRequest)
-		json.NewEncoder(w).Encode(map[string]interface{}{
+		err := json.NewEncoder(w).Encode(map[string]interface{}{
 			"error":  "Validation failed",
 			"fields": errorMessages,
 		})
+		if err != nil {
+			log.Error().Msgf("Writing to the host failed during transmitting: %v", err)
+			http.Error(w, "Failed to encode response", http.StatusInternalServerError)
+			return
+		}
 		return
 	}
 
@@ -87,6 +93,32 @@ func PatchPostByIdAndCreator(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		log.Error().Msgf("Error during post update: %v", err)
 		errString := fmt.Sprintf("Error during post update: %v", err)
+		http.Error(w, errString, http.StatusInternalServerError)
+		return
+	}
+}
+
+func DeletePostByIdAndCreatorId(w http.ResponseWriter, r *http.Request) {
+	log := logger.GetLogger()
+
+	postId := chi.URLParam(r, "postId")
+	if postId == "" {
+		log.Error().Msgf("Invalid request without postId")
+		http.Error(w, "postId was missing or given under a false key", http.StatusBadRequest)
+		return
+	}
+
+	creatorId := chi.URLParam(r, "creatorId")
+	if creatorId == "" {
+		log.Error().Msgf("Invalid request without creatorId")
+		http.Error(w, "creatorId was missing or given under a false key", http.StatusBadRequest)
+		return
+	}
+
+	err := db.DeletePostByIdAndCreatorId(r.Context(), config.MongoDB, postId, creatorId)
+	if err != nil {
+		log.Error().Msgf("Error during post delete: %v", err)
+		errString := fmt.Sprintf("Error during post delete: %v", err)
 		http.Error(w, errString, http.StatusInternalServerError)
 		return
 	}
