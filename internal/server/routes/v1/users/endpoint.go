@@ -2,13 +2,14 @@ package users
 
 import (
 	"encoding/json"
+	"fmt"
+	"github.com/go-chi/chi/v5"
+	"github.com/go-playground/validator/v10"
 	"hackathon-basar-backend/internal/config"
 	"hackathon-basar-backend/internal/db"
 	"hackathon-basar-backend/internal/logger"
 	"hackathon-basar-backend/internal/models"
 	"net/http"
-
-	"github.com/go-chi/chi/v5"
 )
 
 func GetPostsByCreator(w http.ResponseWriter, r *http.Request) {
@@ -60,12 +61,33 @@ func PatchPostByIdAndCreator(w http.ResponseWriter, r *http.Request) {
 
 	err := json.NewDecoder(r.Body).Decode(&post)
 
-	if err != nil {
-		log.Error().Msgf("Invalid request with body: %v", r.Body)
-		http.Error(w, "Invalid request body when transforming to the required object.", http.StatusBadRequest)
+	// Validate the struct
+	validate := validator.New()
+	if err := validate.Struct(post); err != nil {
+		log.Error().Msgf("Validation failed: %v", err)
+
+		// Get detailed validation errors
+		validationErrors := err.(validator.ValidationErrors)
+		errorMessages := make(map[string]string)
+
+		for _, fieldError := range validationErrors {
+			errorMessages[fieldError.Field()] = fmt.Sprintf("Field '%s' failed validation: %s", fieldError.Field(), fieldError.Tag())
+		}
+
+		w.Header().Set("Content-Type", "application/json")
+		w.WriteHeader(http.StatusBadRequest)
+		json.NewEncoder(w).Encode(map[string]interface{}{
+			"error":  "Validation failed",
+			"fields": errorMessages,
+		})
 		return
 	}
 
-	db.PatchPostByIdAndCreatorId(r.Context(), config.MongoDB, postId, creatorId, post)
-
+	err = db.PatchPostByIdAndCreatorId(r.Context(), config.MongoDB, postId, creatorId, post)
+	if err != nil {
+		log.Error().Msgf("Error during post update: %v", err)
+		errString := fmt.Sprintf("Error during post update: %v", err)
+		http.Error(w, errString, http.StatusInternalServerError)
+		return
+	}
 }
