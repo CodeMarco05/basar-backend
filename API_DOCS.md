@@ -68,15 +68,17 @@ Success (200 OK):
   {
     "id": "507f1f77bcf86cd799439011",
     "creatorId": "firebaseUUID",
+    "creatorMail": "creator@example.com",
     "title": "Vintage Camera for Sale",
     "description": "Beautiful vintage camera in excellent condition",
     "tags": ["electronics", "vintage", "camera"],
     "text": "Detailed description of the camera...",
     "payPalMail": "seller@example.com",
     "images": [
-      "https://example.com/image1.jpg",
-      "https://example.com/image2.jpg"
+      "base64_encoded_image_1",
+      "base64_encoded_image_2"
     ],
+    "comments": [],
     "created_at": "2024-01-15T10:30:00Z"
   }
 ]
@@ -114,15 +116,17 @@ Success (200 OK):
 {
   "id": "507f1f77bcf86cd799439011",
   "creatorId": "firebaseUUID",
+  "creatorMail": "creator@example.com",
   "title": "Vintage Camera for Sale",
   "description": "Beautiful vintage camera in excellent condition",
   "tags": ["electronics", "vintage", "camera"],
   "text": "Detailed description of the camera...",
   "payPalMail": "seller@example.com",
   "images": [
-    "https://example.com/image1.jpg",
-    "https://example.com/image2.jpg"
+    "base64_encoded_image_1",
+    "base64_encoded_image_2"
   ],
+  "comments": [],
   "created_at": "2024-01-15T10:30:00Z"
 }
 ```
@@ -159,6 +163,7 @@ Content-Type: application/json
 ```json
 {
   "creatorId": "firebaseUUID",
+  "creatorMail": "creator@example.com",
   "title": "Vintage Camera for Sale",
   "description": "Beautiful vintage camera in excellent condition",
   "tags": ["electronics", "vintage", "camera"],
@@ -173,12 +178,13 @@ Content-Type: application/json
 
 **Field Requirements:**
 - `creatorId` (string, required): Firebase UUID of the post creator
+- `creatorMail` (string, required): Email address of the post creator
 - `title` (string, required): Post title
 - `description` (string, required): Short description of the item
 - `tags` (array of strings, required): Non-empty array of tags/categories
 - `text` (string, required): Detailed description/content
 - `payPalMail` (string, required): Valid email address for PayPal payments
-- `images` (array of strings, required): Non-empty array of image URLs
+- `images` (array of strings, required): Non-empty array of Base64 encoded images
 
 **Response:**
 
@@ -342,14 +348,16 @@ Success (200 OK):
   {
     "id": "507f1f77bcf86cd799439011",
     "creatorId": "firebaseUUID",
+    "creatorMail": "creator@example.com",
     "title": "Vintage Camera for Sale",
     "description": "Beautiful vintage camera in excellent condition",
     "tags": ["electronics", "vintage", "camera"],
     "text": "Detailed description of the camera...",
     "payPalMail": "seller@example.com",
     "images": [
-      "base64 image1"
+      "base64_encoded_image_1"
     ],
+    "comments": [],
     "created_at": "2024-01-15T10:30:00Z"
   }
 ]
@@ -392,6 +400,7 @@ Content-Type: application/json
 ```json
 {
   "creatorId": "firebaseUUID",
+  "creatorMail": "creator@example.com",
   "title": "Vintage Camera for Sale - Price Reduced",
   "description": "Beautiful vintage camera in excellent condition - Now with reduced price!",
   "tags": ["electronics", "vintage", "camera", "sale"],
@@ -404,7 +413,15 @@ Content-Type: application/json
 }
 ```
 
-**Field Requirements:** Same as Create Post (all fields required)
+**Field Requirements:**
+- `creatorId` (string, required): Firebase UUID of the post creator
+- `creatorMail` (string, required): Email address of the post creator
+- `title` (string, required): Post title
+- `description` (string, required): Short description of the item
+- `tags` (array of strings, required): Non-empty array of tags/categories
+- `text` (string, required): Detailed description/content
+- `payPalMail` (string, required): Valid email address for PayPal payments
+- `images` (array of strings, required): Non-empty array of Base64 encoded images
 
 **Response:**
 
@@ -497,12 +514,14 @@ Error (500 Internal Server Error):
 {
   "id": "string (MongoDB ObjectId)",
   "creatorId": "string",
+  "creatorMail": "string (email format)",
   "title": "string",
   "description": "string",
   "tags": ["string"],
   "text": "string",
   "payPalMail": "string (email format)",
   "images": ["string (Base64)"],
+  "comments": [Comment],
   "created_at": "timestamp (ISO 8601)"
 }
 ```
@@ -511,12 +530,13 @@ Error (500 Internal Server Error):
 ```json
 {
   "creatorId": "string (required, Firebase UUID)",
+  "creatorMail": "string (required, email format)",
   "title": "string (required)",
   "description": "string (required)",
   "tags": ["string"] (required, non-empty array),
   "text": "string (required)",
   "payPalMail": "string (required, valid email)",
-  "images": ["string"] (required, non-empty array)
+  "images": ["string"] (required, non-empty array of Base64 encoded images)
 }
 ```
 
@@ -538,21 +558,31 @@ Error (500 Internal Server Error):
 
 ### Email Validation
 - `payPalMail` must be a valid email format
+- `creatorMail` must be a valid email format
+- `commenterMail` must be a valid email format
 - Example: `user@example.com`
 
 ### Array Validation
 - `tags` must be a non-empty array
 - `images` must be a non-empty array
 
-### Required Fields
+### Required Fields for InsertPost
 All fields in InsertPost object are required:
 - creatorId
+- creatorMail
 - title
 - description
 - tags
 - text
 - payPalMail
 - images
+
+### Required Fields for Comment
+All fields in Comment object are required:
+- creatorId
+- message
+- commenterMail
+- commenterName
 
 ---
 
