@@ -25,7 +25,7 @@ type InsertPost struct {
 	Description string    `bson:"description" json:"description" validate:"required"`
 	Tags        []string  `bson:"tags" json:"tags" validate:"required"`
 	Text        string    `bson:"text" json:"text" validate:"required"`
-	PayPalMail  string    `bson:"payPalMail" json:"payPalMail" validate:"omitempty,mail"`
+	PayPalMail  string    `bson:"payPalMail" json:"payPalMail" validate:"omitempty"`
 	Comments    []Comment `bson:"comments" json:"comments"`
 	Images      []string  `bson:"images" json:"images" validate:"required"`
 }
