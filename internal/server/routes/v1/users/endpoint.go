@@ -2,6 +2,7 @@ package users
 
 import (
 	"encoding/json"
+	"fmt"
 	"hackathon-basar-backend/internal/config"
 	"hackathon-basar-backend/internal/db"
 	"hackathon-basar-backend/internal/logger"
@@ -66,6 +67,11 @@ func PatchPostByIdAndCreator(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	db.PatchPostByIdAndCreatorId(r.Context(), config.MongoDB, postId, creatorId, post)
-
+	err = db.PatchPostByIdAndCreatorId(r.Context(), config.MongoDB, postId, creatorId, post)
+	if err != nil {
+		log.Error().Msgf("Error during post update: %v", err)
+		errString := fmt.Sprintf("Error during post update: %v", err)
+		http.Error(w, errString, http.StatusInternalServerError)
+		return
+	}
 }
