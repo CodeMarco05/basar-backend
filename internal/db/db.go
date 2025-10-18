@@ -180,9 +180,9 @@ func InsertPost(ctx context.Context, db *mongo.Database, insertPost models.Inser
 		Tags:        insertPost.Tags,
 		Text:        insertPost.Text,
 		PayPalMail:  insertPost.PayPalMail,
-		Images:      processedImages, // Use the processed images
-		Comments:    insertPost.Comments,
-		CreatedAt:   time.Now(), // Set the creation timestamp
+		Images:      processedImages,    // Use the processed images
+		Comments:    []models.Comment{}, // Initialize with empty comments array
+		CreatedAt:   time.Now(),         // Set the creation timestamp
 	}
 
 	// Insert the post (MongoDB will auto-generate the _id)
@@ -331,7 +331,7 @@ func DeletePostByIdAndCreatorId(ctx context.Context, db *mongo.Database, postID 
 
 // AddCommentToPost appends a new comment to the comments array of a specific post
 // The comment's CreatedAt timestamp is set automatically
-func AddCommentToPost(ctx context.Context, db *mongo.Database, postID string, comment models.Comment) error {
+func AddCommentToPost(ctx context.Context, db *mongo.Database, postID string, comment models.CommentInsert) error {
 	collection := db.Collection("posts")
 
 	// Convert the string ID to MongoDB ObjectID

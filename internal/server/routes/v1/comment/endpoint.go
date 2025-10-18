@@ -25,7 +25,7 @@ func CreateComment(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	var comment models.Comment
+	var comment models.CommentInsert
 
 	err := json.NewDecoder(r.Body).Decode(&comment)
 
