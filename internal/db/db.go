@@ -8,6 +8,7 @@ import (
 	"hackathon-basar-backend/internal/models"
 	"time"
 
+	"github.com/google/uuid"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
@@ -339,6 +340,9 @@ func AddCommentToPost(ctx context.Context, db *mongo.Database, postID string, co
 	if err != nil {
 		return fmt.Errorf("invalid post ID format: %w", err)
 	}
+
+	// Generate a new UUID for the comment
+	comment.ID = uuid.New().String()
 
 	// Set the comment's creation timestamp
 	comment.CreatedAt = time.Now()
