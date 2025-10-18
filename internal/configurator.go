@@ -99,9 +99,13 @@ func ChiConfig() *chi.Mux {
 	r.Route("/api/v1", func(r chi.Router) {
 		r.Route("/posts", func(r chi.Router) {
 			r.Get("/", posts.GetAllPosts)
+			r.Get("/{postId}", posts.GetPost)
 			r.Post("/", posts.InsertPost)
 		})
 
+		r.Route("/users", func(r chi.Router) {
+			r.Get("/{creatorId}/posts", posts.GetPostsByCreator)
+		})
 	})
 
 	return r
