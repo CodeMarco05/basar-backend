@@ -155,7 +155,7 @@ func InsertPost(ctx context.Context, db *mongo.Database, insertPost models.Inser
 
 	// Create a full Post object from the InsertPost data
 	post := models.Post{
-		Creator:     insertPost.Creator,
+		CreatorId:   insertPost.CreatorId,
 		Title:       insertPost.Title,
 		Description: insertPost.Description,
 		Tags:        insertPost.Tags,
@@ -204,13 +204,13 @@ func GetPostByID(ctx context.Context, db *mongo.Database, postID string) (*model
 }
 
 // GetPostsByCreator retrieves all posts created by a specific creator
-func GetPostsByCreator(ctx context.Context, db *mongo.Database, creatorID string) ([]models.Post, error) {
+func GetPostsByCreator(ctx context.Context, db *mongo.Database, creatorId string) ([]models.Post, error) {
 	collection := db.Collection("posts")
 
 	// Find all posts where creator matches the provided ID
-	cursor, err := collection.Find(ctx, bson.M{"creator": creatorID})
+	cursor, err := collection.Find(ctx, bson.M{"creatorId": creatorId})
 	if err != nil {
-		return nil, fmt.Errorf("failed to find posts by creator: %w", err)
+		return nil, fmt.Errorf("failed to find posts by creatorId: %w", err)
 	}
 	defer cursor.Close(ctx)
 
@@ -226,7 +226,7 @@ func GetPostsByCreator(ctx context.Context, db *mongo.Database, creatorID string
 // UpdatePostByID updates a post by its MongoDB ObjectID after validating the creator
 // It checks if the post exists and if the creator matches before updating
 // Only updates the fields from InsertPost, leaving _id, creator, and created_at unchanged
-func UpdatePostByIdAndCreator(ctx context.Context, db *mongo.Database, postID string, creator string, updateData models.InsertPost) error {
+func PatchPostByIdAndCreatorId(ctx context.Context, db *mongo.Database, postID string, creatorId string, updateData models.InsertPost) error {
 	collection := db.Collection("posts")
 
 	// Convert the string ID to MongoDB ObjectID
@@ -249,8 +249,8 @@ func UpdatePostByIdAndCreator(ctx context.Context, db *mongo.Database, postID st
 
 	// Update the post, matching both _id and creator for security
 	result, err := collection.UpdateOne(ctx, bson.M{
-		"_id":     objectID,
-		"creator": creator,
+		"_id":       objectID,
+		"creatorId": creatorId,
 	}, update)
 	if err != nil {
 		return fmt.Errorf("failed to update post: %w", err)
@@ -258,7 +258,7 @@ func UpdatePostByIdAndCreator(ctx context.Context, db *mongo.Database, postID st
 
 	// If no documents were matched, the post doesn't exist or creator doesn't match
 	if result.MatchedCount == 0 {
-		return fmt.Errorf("post not found with ID: %s and creator: %s", postID, creator)
+		return fmt.Errorf("post not found with Id: %s and creatorId: %s", postID, creatorId)
 	}
 
 	return nil
