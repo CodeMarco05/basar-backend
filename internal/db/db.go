@@ -179,3 +179,26 @@ func InsertPost(ctx context.Context, db *mongo.Database, insertPost models.Inser
 
 	return insertedID.Hex(), nil
 }
+
+// GetPostByID retrieves a specific post by its MongoDB ObjectID
+func GetPostByID(ctx context.Context, db *mongo.Database, postID string) (*models.Post, error) {
+	collection := db.Collection("posts")
+
+	// Convert the string ID to MongoDB ObjectID
+	objectID, err := primitive.ObjectIDFromHex(postID)
+	if err != nil {
+		return nil, fmt.Errorf("invalid post ID format: %w", err)
+	}
+
+	// Find the post by _id
+	var post models.Post
+	err = collection.FindOne(ctx, bson.M{"_id": objectID}).Decode(&post)
+	if err != nil {
+		if err == mongo.ErrNoDocuments {
+			return nil, fmt.Errorf("post not found with ID: %s", postID)
+		}
+		return nil, fmt.Errorf("failed to retrieve post: %w", err)
+	}
+
+	return &post, nil
+}
