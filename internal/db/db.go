@@ -263,3 +263,31 @@ func PatchPostByIdAndCreatorId(ctx context.Context, db *mongo.Database, postID s
 
 	return nil
 }
+
+// DeletePostByIdAndCreatorId deletes a post matching both _id and creatorId
+// It checks if the post exists and if the creator matches before deleting
+func DeletePostByIdAndCreatorId(ctx context.Context, db *mongo.Database, postID string, creatorId string) error {
+	collection := db.Collection("posts")
+
+	// Convert the string ID to MongoDB ObjectID
+	objectID, err := primitive.ObjectIDFromHex(postID)
+	if err != nil {
+		return fmt.Errorf("invalid post ID format: %w", err)
+	}
+
+	// Delete the post, matching both _id and creator for security
+	result, err := collection.DeleteOne(ctx, bson.M{
+		"_id":       objectID,
+		"creatorId": creatorId,
+	})
+	if err != nil {
+		return fmt.Errorf("failed to delete post: %w", err)
+	}
+
+	// If no documents were deleted, the post doesn't exist or creator doesn't match
+	if result.DeletedCount == 0 {
+		return fmt.Errorf("post not found with Id: %s and creatorId: %s", postID, creatorId)
+	}
+
+	return nil
+}
