@@ -126,3 +126,24 @@ func GetPost(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 }
+
+func GetAllTags(w http.ResponseWriter, r *http.Request) {
+	log := logger.GetLogger()
+
+	tags, err := db.GetAllTags(r.Context(), config.MongoDB)
+	if err != nil {
+		log.Error().Msgf("Getting all tags failed: %v", err)
+		http.Error(w, "Internal Server Error", http.StatusInternalServerError)
+		return
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(http.StatusOK)
+	err = json.NewEncoder(w).Encode(tags)
+
+	if err != nil {
+		log.Error().Msgf("Writing to the host failed during transmitting: %v", err)
+		http.Error(w, "Failed to encode response", http.StatusInternalServerError)
+		return
+	}
+}

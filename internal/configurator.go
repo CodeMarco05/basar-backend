@@ -118,6 +118,8 @@ func ChiConfig() *chi.Mux {
 			r.Get("/{postId}", posts.GetPost)
 			r.Post("/", posts.InsertPost)
 
+			r.Get("/tags", posts.GetAllTags)
+
 			r.Route("/{postId}/comments", func(r chi.Router) {
 				r.Post("/", comment.CreateComment)
 				r.Delete("/{commentId}/{commentCreatorId}", comment.DeleteCommentByPostIdCommentCreatorIdCommentId)
