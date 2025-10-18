@@ -7,6 +7,7 @@ import (
 	"hackathon-basar-backend/internal/db"
 	"hackathon-basar-backend/internal/logger"
 	"hackathon-basar-backend/internal/server/routes"
+	"hackathon-basar-backend/internal/server/routes/v1/comment"
 	"hackathon-basar-backend/internal/server/routes/v1/posts"
 	"hackathon-basar-backend/internal/server/routes/v1/users"
 	"net/http"
@@ -105,6 +106,10 @@ func ChiConfig() *chi.Mux {
 			r.Get("/", posts.GetAllPosts)
 			r.Get("/{postId}", posts.GetPost)
 			r.Post("/", posts.InsertPost)
+
+			r.Route("/comments", func(r chi.Router) {
+				r.Post("/{postId}", comment.CreateComment)
+			})
 		})
 
 		r.Route("/users", func(r chi.Router) {

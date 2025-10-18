@@ -63,6 +63,12 @@ func PatchPostByIdAndCreatorId(w http.ResponseWriter, r *http.Request) {
 
 	err := json.NewDecoder(r.Body).Decode(&post)
 
+	if err != nil {
+		log.Error().Msgf("Error decoding body: %v", err)
+		http.Error(w, "Error decoding body", http.StatusBadRequest)
+		return
+	}
+
 	// Validate the struct
 	validate := validator.New()
 	if err := validate.Struct(post); err != nil {
