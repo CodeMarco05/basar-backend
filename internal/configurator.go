@@ -8,6 +8,7 @@ import (
 	"hackathon-basar-backend/internal/logger"
 	"hackathon-basar-backend/internal/server/routes"
 	"hackathon-basar-backend/internal/server/routes/v1/posts"
+	"hackathon-basar-backend/internal/server/routes/v1/users"
 	"net/http"
 	"os"
 	"strconv"
@@ -104,7 +105,7 @@ func ChiConfig() *chi.Mux {
 		})
 
 		r.Route("/users", func(r chi.Router) {
-			r.Get("/{creatorId}/posts", posts.GetPostsByCreator)
+			r.Get("/{creatorId}/posts", users.GetPostsByCreator)
 		})
 	})
 
