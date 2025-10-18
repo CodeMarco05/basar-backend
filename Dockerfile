@@ -22,6 +22,9 @@ RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o main .
 # Final stage
 FROM alpine:latest
 
+# Install curl for healthcheck
+RUN apk --no-cache add curl
+
 WORKDIR /root/
 
 # Copy the binary from builder

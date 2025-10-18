@@ -27,7 +27,7 @@ test_posts = [
     "name": "Uni zu verkaufen",
     "body": {
         "creatorId": "firebase-user-012",
-        "creatorMail": "prof.dr.sparsam@nordakademie.de",
+        "creatorMail": "dr.sauer@nordakademie.de",
         "title": "Komplette Universität zu verkaufen - Gebraucht aber funktional",
         "description": "NAK Elmshorn - Wegen Budgetkürzungen muss leider alles weg",
         "tags": ["immobilien", "bildung", "schnäppchen", "selbstabholer"],

@@ -8,8 +8,8 @@ import (
 )
 
 func HealthCheck(w http.ResponseWriter, r *http.Request) {
-	databse := config.MongoDB
-	err := db.HealthCheck(r.Context(), databse)
+	database := config.MongoDB
+	err := db.HealthCheck(r.Context(), database)
 
 	if err != nil {
 		log := logger.GetLogger()
@@ -17,6 +17,7 @@ func HealthCheck(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "The database isn't available.", http.StatusUnauthorized)
 	}
 
+	w.WriteHeader(http.StatusOK)
 	_, err = w.Write([]byte("The application appears to be up and running"))
 	if err != nil {
 		log := logger.GetLogger()
