@@ -202,3 +202,23 @@ func GetPostByID(ctx context.Context, db *mongo.Database, postID string) (*model
 
 	return &post, nil
 }
+
+// GetPostsByCreator retrieves all posts created by a specific creator
+func GetPostsByCreator(ctx context.Context, db *mongo.Database, creatorID string) ([]models.Post, error) {
+	collection := db.Collection("posts")
+
+	// Find all posts where creator matches the provided ID
+	cursor, err := collection.Find(ctx, bson.M{"creator": creatorID})
+	if err != nil {
+		return nil, fmt.Errorf("failed to find posts by creator: %w", err)
+	}
+	defer cursor.Close(ctx)
+
+	// Decode all posts
+	var posts []models.Post
+	if err := cursor.All(ctx, &posts); err != nil {
+		return nil, fmt.Errorf("failed to decode posts: %w", err)
+	}
+
+	return posts, nil
+}
