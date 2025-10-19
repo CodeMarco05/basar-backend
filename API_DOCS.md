@@ -16,6 +16,8 @@
 - [ICS Files](#ics-files)
   - [Get All Available ICS Files](#get-all-available-ics-files)
   - [Get ICS File](#get-ics-file)
+- [Memes](#memes)
+  - [Get Memes (Paginated)](#get-memes-paginated)
 
 ---
 
@@ -583,6 +585,58 @@ File does not exist
 
 ---
 
+## Memes
+
+### Get Memes (Paginated)
+
+**Endpoint:** `GET /api/v1/memes/{page}`
+
+**Description:** Retrieves a paginated list of memes.
+
+**Authentication:** Required (via AuthMiddleware)
+
+**Path Parameters:**
+- `page` (integer, required): The page number to retrieve.
+
+**Request:**
+```http
+GET /api/v1/memes/1
+```
+
+**Response:**
+
+Success (200 OK):
+```json
+{
+  "totalPages": 10,
+  "hasNext": true,
+  "hasPrev": false,
+  "memeList": [
+    {
+      "id": "meme-id-123",
+      "imageUrl": "https://example.com/meme.jpg",
+      "altText": "A funny meme",
+      "imageB64": "base64_encoded_image_string",
+      "title": "My Awesome Meme",
+      "permalink": "https://example.com/meme-id-123",
+      "likes": "100",
+      "timeStamp": "2024-01-01T12:00:00Z",
+      "user": "MemeLord",
+      "tags": ["funny", "dev"],
+      "comments": ["First comment", "lol"]
+    }
+  ]
+}
+```
+
+Error (400 Bad Request):
+```
+Internal Server Error
+```
+(Note: The error message is generic, but it's returned for invalid page parameters)
+
+---
+
 ## Data Models
 
 ### Post Object
@@ -625,6 +679,33 @@ File does not exist
   "commenterMail": "string (email format)",
   "commenterName": "string",
   "createdAt": "timestamp (ISO 8601)"
+}
+```
+
+### Meme Object
+```json
+{
+  "id": "string",
+  "imageUrl": "string",
+  "altText": "string",
+  "imageB64": "string (Base64)",
+  "title": "string",
+  "permalink": "string",
+  "likes": "string",
+  "timeStamp": "string",
+  "user": "string",
+  "tags": ["string"],
+  "comments": ["string"]
+}
+```
+
+### MemeResponse Object
+```json
+{
+  "totalPages": "integer",
+  "hasNext": "boolean",
+  "hasPrev": "boolean",
+  "memeList": [Meme]
 }
 ```
 
@@ -711,5 +792,6 @@ For validation errors:
 | GET | `/api/v1/users/{creatorId}/posts` | Get posts by creator |
 | PATCH | `/api/v1/users/{creatorId}/{postId}` | Update post |
 | DELETE | `/api/v1/users/{creatorId}/{postId}` | Delete post |
+| GET | `/api/v1/memes/{page}` | Get memes (paginated) |
 | GET | `/api/v1/ics` | Get all available ICS file names |
 | GET | `/api/v1/ics/{fileName}` | Download specific ICS file |
