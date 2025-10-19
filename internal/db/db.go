@@ -479,8 +479,8 @@ func GetAllTags(ctx context.Context, db *mongo.Database) ([]string, error) {
 func GetUserAcceptedPostsByUserId(ctx context.Context, db *mongo.Database, userId string) ([]models.Post, error) {
 	collection := db.Collection("posts")
 
-	// Find all posts where acceptedUser.userId matches the provided userId
-	cursor, err := collection.Find(ctx, bson.M{"acceptedUser.userId": userId})
+	// Find all posts where acceptedUser.userId matches the provided userId -> userid is small because mongo internal
+	cursor, err := collection.Find(ctx, bson.M{"acceptedUser.userid": userId})
 	if err != nil {
 		return nil, fmt.Errorf("failed to find accepted posts by userId: %w", err)
 	}
