@@ -139,6 +139,19 @@ test_posts = [
             "payPalMail": "future.manager@nordakademie.de",
             "images": ["./test-images/the-office.jpeg"]
         }
+    },
+        {
+        "name": "Ludolph",
+        "body": {
+            "creatorId": "firebase-user-015",
+            "creatorMail": "gold.liebhaber@nordakademie.de",
+            "title": "Ludolph Seminar abzugeben!!",
+            "description": "Bitte nehmt mir mein Wochende weg",
+            "tags": ["seminar","wohnung","ludolph"],
+            "text": "Bittitititititi",
+            "payPalMail": "gold.liebhaber@nordakademie.de",
+            "images": ["./test-images/ludolf-1.jpg", " ./test-images/ludolf-2.jpeg"]
+        }
     }
 
 ]
