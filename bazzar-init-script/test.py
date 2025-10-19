@@ -22,19 +22,6 @@ test_posts = [
         "payPalMail": "unauffällige-person-mit-einem-sack@example.com",
         "images": ["./test-images/redbull-dieb.jpg"]
     }
-},
-    {
-    "name": "Treasure Hoard",
-    "body": {
-        "creatorId": "firebase-user-011",
-        "creatorMail": "totally.not.a.dragon@example.com",
-        "title": "Genuine Dragon's Treasure - Must Sell ASAP",
-        "description": "Relocating to smaller cave, need to downsize collection",
-        "tags": ["gold", "treasure", "collectibles", "definitely-real"],
-        "text": "After 500 years of hoarding, I've finally admitted I have a problem. Selling my gold pile (approximately 3 tons). NO LOWBALLERS - I know what I have! Cash only. Serious inquiries only - if you're a knight, don't bother. Pick-up only from mountain cave. May throw in cursed amulet for free if you take it all. P.S. - Ignore the scorch marks on the coins.",
-        "payPalMail": "totally.not.a.dragon@example.com",
-        "images": ["./test-images/gold-pile.jpg"]
-    }
     },
     {
     "name": "Uni zu verkaufen",
@@ -49,6 +36,45 @@ test_posts = [
         "images": ["./test-images/nak-elmshorn.jpg"]
     }
     },
+        {
+        "name": "Auto parken",
+        "body": {
+            "creatorId": "firebase-user-008",
+            "creatorMail": "parking.instructor@nordakademie.de",
+            "title": "Einparkkurs für Erstsemester Studenten - KOSTENLOS!",
+            "description": "Falls ihr nach Erhalt eures Führerscheins nicht in der Lage seid zu parken, kann euch dieser kostenlose Kurs weiterhelfen.",
+            "tags": ["ersties", "autos", "parken", "nordakademie", "kostenlos", "führerschein"],
+            "text": "Biete kostenlosen Einparkkurs speziell für NAK-Erstsemester! Nach 5 Semestern Beobachtung des morgendlichen Chaos auf dem NAK-Parkplatz habe ich beschlossen: Es muss sich etwas ändern! 🚗 Im Kurs lernt ihr: Rückwärts einparken ohne 47 Anläufe, Parallelparken ohne Panikattacke, und wie man NICHT auf zwei Parkplätzen gleichzeitig steht. Bonus: Tipps zum Auffinden eures Autos nach der Vorlesung. Samstag 10 Uhr, NAK-Parkplatz (falls noch Platz ist 😅). Bringt euer Auto mit und eure Geduld. Anmeldung per Mail - Plätze begrenzt!",
+            "payPalMail": "parking.instructor@nordakademie.de",
+            "images": ["./test-images/auto-parken.png"]
+        }
+    },
+        {
+        "name": "Transferleistung ghostwriter",
+        "body": {
+            "creatorId": "firebase-user-014",
+            "creatorMail": "desperate.student@nordakademie.de",
+            "title": "Transferleistung Ghostwriter gesucht - DRINGEND!!!",
+            "description": "Suche jemanden, der meine TL schreibt - Deadline in 2 Wochen",
+            "tags": ["transferleistung", "ghostwriter", "nordakademie", "studium", "verzweifelt"],
+            "text": "Biete großzügige Bezahlung für jemanden, der meine Transferleistung zum Thema 'Digitalisierung in mittelständischen Unternehmen' schreibt. Hatte ursprünglich vor, das selbst zu machen, aber habe die letzten 3 Monate nur an meiner Work-Life-Balance gearbeitet (hauptsächlich Life, weniger Work). Anforderungen: 15-20 Seiten, wissenschaftlicher Stil, Minimum 10 Quellen. Mein Praxisunternehmen weiß von nichts und soll auch nichts erfahren! Biete: 300€ VB, ewige Dankbarkeit, oder meine Seminarplätze für die nächsten 2 Semester. WICHTIG: Plagiatsprüfung muss bestanden werden! Bei Interesse bitte diskrete Kontaktaufnahme. P.S.: Noten zwischen 2,0-3,0 sind völlig ok, will nicht auffallen. 😅",
+            "payPalMail": "desperate.student@nordakademie.de",
+            "images": ["./test-images/transferleistung-loewe.jpeg"]
+        }
+    },
+        {
+        "name": "Whiskey Tasting Event",
+        "body": {
+            "creatorId": "firebase-user-016",
+            "creatorMail": "whiskey.connoisseur@nordakademie.de",
+            "title": "Whiskey-Tasting Ticket abzugeben - Premium Single Malts",
+            "description": "Exklusives Tasting mit 6 schottischen Single Malts - Samstag Abend",
+            "tags": ["whiskey", "tasting", "event", "genuss", "nordakademie", "getränke", "ludolph"],
+            "text": "Verkaufe mein Ticket für das Premium Whiskey-Tasting am kommenden Samstag, 19 Uhr. Hatte mich riesig darauf gefreut, aber meine Freundin hat mir erklärt, dass 'Whiskey-Tasting' und 'Beziehung retten' am gleichen Abend nicht kompatibel sind 😅 Das Event umfasst 6 verschiedene schottische Single Malts (Islay, Speyside & Highland), professionelle Verkostungsleitung mit Hintergrundinfos zu Herstellung und Geschmacksnoten, dazu gibt es Wasser, Brot und Käse. Ursprünglicher Preis: 45€, verkaufe für 35€. Location: Gemütliche Whiskey-Bar in Elmshorn. Perfekt für Kenner oder Einsteiger! Bei Interesse schnell melden - das wird ein Genuss!",
+            "payPalMail": "whiskey.connoisseur@nordakademie.de",
+            "images": ["./test-images/whiskey-tasting.jpg"]
+        }
+    },
 {
     "name": "Seminar Platz abzugeben",
     "body": {
@@ -62,6 +88,19 @@ test_posts = [
         "images": ["./test-images/seminar-banner.png"]
     }
 },
+{
+    "name": "Treasure Hoard",
+    "body": {
+        "creatorId": "firebase-user-011",
+        "creatorMail": "totally.not.a.dragon@example.com",
+        "title": "Genuine Dragon's Treasure - Must Sell ASAP",
+        "description": "Relocating to smaller cave, need to downsize collection",
+        "tags": ["gold", "treasure", "collectibles", "definitely-real"],
+        "text": "After 500 years of hoarding, I've finally admitted I have a problem. Selling my gold pile (approximately 3 tons). NO LOWBALLERS - I know what I have! Cash only. Serious inquiries only - if you're a knight, don't bother. Pick-up only from mountain cave. May throw in cursed amulet for free if you take it all. P.S. - Ignore the scorch marks on the coins.",
+        "payPalMail": "totally.not.a.dragon@example.com",
+        "images": ["./test-images/gold-pile.jpg"]
+    }
+    },
     {
         "name": "Business Seminar Platz",
         "body": {
@@ -73,19 +112,6 @@ test_posts = [
             "text": "Biete Seminar-Platz für 'Von der Businessidee zum Businessplan' am kommenden Wochenende. Hatte mir vorgenommen, endlich meine geniale App-Idee umzusetzen, aber Netflix hat eine neue Serie rausgebracht. Vielleicht nächstes Semester. Der Seminarleiter soll super sein! Perfekt für angehende Gründer oder alle, die endlich ihre Ideen zu Papier bringen wollen. VB 20€ oder ein gutes Pitch-Deck als Tausch.",
             "payPalMail": "startup.dreams@nordakademie.de",
             "images": ["./test-images/tony-seminar.jpg"]
-        }
-    },
-    {
-        "name": "Transferleistung ghostwriter",
-        "body": {
-            "creatorId": "firebase-user-014",
-            "creatorMail": "desperate.student@nordakademie.de",
-            "title": "Transferleistung Ghostwriter gesucht - DRINGEND!!!",
-            "description": "Suche jemanden, der meine TL schreibt - Deadline in 2 Wochen",
-            "tags": ["transferleistung", "ghostwriter", "nordakademie", "studium", "verzweifelt"],
-            "text": "Biete großzügige Bezahlung für jemanden, der meine Transferleistung zum Thema 'Digitalisierung in mittelständischen Unternehmen' schreibt. Hatte ursprünglich vor, das selbst zu machen, aber habe die letzten 3 Monate nur an meiner Work-Life-Balance gearbeitet (hauptsächlich Life, weniger Work). Anforderungen: 15-20 Seiten, wissenschaftlicher Stil, Minimum 10 Quellen. Mein Praxisunternehmen weiß von nichts und soll auch nichts erfahren! Biete: 300€ VB, ewige Dankbarkeit, oder meine Seminarplätze für die nächsten 2 Semester. WICHTIG: Plagiatsprüfung muss bestanden werden! Bei Interesse bitte diskrete Kontaktaufnahme. P.S.: Noten zwischen 2,0-3,0 sind völlig ok, will nicht auffallen. 😅",
-            "payPalMail": "desperate.student@nordakademie.de",
-            "images": ["./test-images/transferleistung-loewe.jpeg"]
         }
     },
     {
@@ -113,33 +139,8 @@ test_posts = [
             "payPalMail": "future.manager@nordakademie.de",
             "images": ["./test-images/the-office.jpeg"]
         }
-    },
-    {
-        "name": "Auto parken",
-        "body": {
-            "creatorId": "firebase-user-008",
-            "creatorMail": "parking.instructor@nordakademie.de",
-            "title": "Einparkkurs für Erstsemester Studenten - KOSTENLOS!",
-            "description": "Falls ihr nach Erhalt eures Führerscheins nicht in der Lage seid zu parken, kann euch dieser kostenlose Kurs weiterhelfen.",
-            "tags": ["ersties", "autos", "parken", "nordakademie", "kostenlos", "führerschein"],
-            "text": "Biete kostenlosen Einparkkurs speziell für NAK-Erstsemester! Nach 5 Semestern Beobachtung des morgendlichen Chaos auf dem NAK-Parkplatz habe ich beschlossen: Es muss sich etwas ändern! 🚗 Im Kurs lernt ihr: Rückwärts einparken ohne 47 Anläufe, Parallelparken ohne Panikattacke, und wie man NICHT auf zwei Parkplätzen gleichzeitig steht. Bonus: Tipps zum Auffinden eures Autos nach der Vorlesung. Samstag 10 Uhr, NAK-Parkplatz (falls noch Platz ist 😅). Bringt euer Auto mit und eure Geduld. Anmeldung per Mail - Plätze begrenzt!",
-            "payPalMail": "parking.instructor@nordakademie.de",
-            "images": ["./test-images/auto-parken.png"]
-        }
-    },
-    {
-        "name": "Whiskey Tasting Event",
-        "body": {
-            "creatorId": "firebase-user-016",
-            "creatorMail": "whiskey.connoisseur@nordakademie.de",
-            "title": "Whiskey-Tasting Ticket abzugeben - Premium Single Malts",
-            "description": "Exklusives Tasting mit 6 schottischen Single Malts - Samstag Abend",
-            "tags": ["whiskey", "tasting", "event", "genuss", "nordakademie", "getränke"],
-            "text": "Verkaufe mein Ticket für das Premium Whiskey-Tasting am kommenden Samstag, 19 Uhr. Hatte mich riesig darauf gefreut, aber meine Freundin hat mir erklärt, dass 'Whiskey-Tasting' und 'Beziehung retten' am gleichen Abend nicht kompatibel sind 😅 Das Event umfasst 6 verschiedene schottische Single Malts (Islay, Speyside & Highland), professionelle Verkostungsleitung mit Hintergrundinfos zu Herstellung und Geschmacksnoten, dazu gibt es Wasser, Brot und Käse. Ursprünglicher Preis: 45€, verkaufe für 35€. Location: Gemütliche Whiskey-Bar in Elmshorn. Perfekt für Kenner oder Einsteiger! Bei Interesse schnell melden - das wird ein Genuss!",
-            "payPalMail": "whiskey.connoisseur@nordakademie.de",
-            "images": ["./test-images/whiskey-tasting.jpg"]
-        }
     }
+
 ]
 
 def load_image_as_base64(image_path):
