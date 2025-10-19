@@ -16,6 +16,8 @@ from urllib.parse import urljoin
 import os
 from pymongo import MongoClient, errors
 from dotenv import load_dotenv
+from PIL import Image
+import io
 
 # Load environment variables from .env file
 load_dotenv()
@@ -139,27 +141,45 @@ class DasistschoenSeleniumScraper:
         
         return self.all_images
     
-    def download_image_as_base64(self, image_url):
-        """Download image and convert to base64"""
+    def download_image_as_base64(self, image_url, quality=85):
+        """Download image, compress it, and convert to base64
+
+        Args:
+            image_url: URL of the image to download
+            quality: JPEG quality (1-100, higher is better quality)
+        """
         try:
             # Make absolute URL if relative
             full_url = urljoin(self.base_url, image_url)
-            
+
             # Download image
             response = requests.get(full_url, timeout=10)
             response.raise_for_status()
-            
+
+            # Open image with Pillow
+            img = Image.open(io.BytesIO(response.content))
+
+            # Convert RGBA to RGB if necessary (for JPEG compatibility)
+            if img.mode in ('RGBA', 'LA', 'P'):
+                background = Image.new('RGB', img.size, (255, 255, 255))
+                if img.mode == 'P':
+                    img = img.convert('RGBA')
+                background.paste(img, mask=img.split()[-1] if img.mode in ('RGBA', 'LA') else None)
+                img = background
+
+            # Compress and save to bytes
+            output_buffer = io.BytesIO()
+            img.save(output_buffer, format='JPEG', quality=quality, optimize=True)
+            compressed_data = output_buffer.getvalue()
+
             # Convert to base64
-            base64_data = base64.b64encode(response.content).decode('utf-8')
-            
-            # Get content type for data URI
-            content_type = response.headers.get('Content-Type', 'image/jpeg')
-            
-            # Return as data URI
-            return f"data:{content_type};base64,{base64_data}"
-            
+            base64_data = base64.b64encode(compressed_data).decode('utf-8')
+
+            # Return as data URI (always JPEG after compression)
+            return f"data:image/jpeg;base64,{base64_data}"
+
         except Exception as e:
-            print(f"Error downloading image {image_url}: {e}")
+            print(f"Error downloading/compressing image {image_url}: {e}")
             return None
     
     def extract_images(self):
