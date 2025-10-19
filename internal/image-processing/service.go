@@ -37,7 +37,7 @@ func NewImageService() *ImageService {
 // a Base64-encoded string ready for MongoDB storage (resized and optimized)
 //
 // Parameters:
-//   - base64Image: Pure base64-encoded image string (without data URI prefix)
+//   - base64Image: Base64-encoded image string (with or without data URI prefix like "data:image/jpeg;base64,")
 //   - filename: Original filename (used to determine image format for encoding)
 //
 // Returns:
@@ -48,11 +48,16 @@ func NewImageService() *ImageService {
 //
 //	service := NewImageService()
 //	processedImage, err := service.ProcessAndEncodeImage("/9j/4AAQ...", "photo.jpg")
+//	// OR with data URI prefix:
+//	processedImage, err := service.ProcessAndEncodeImage("data:image/jpeg;base64,/9j/4AAQ...", "photo.jpg")
 //	if err != nil {
 //	    return err
 //	}
 //	// Store processedImage directly in your Post.Images array
 func (s *ImageService) ProcessAndEncodeImage(base64Image string, filename string) (string, error) {
+	// Strip data URI prefix if present (e.g., "data:image/jpeg;base64,")
+	base64Image = stripDataURIPrefix(base64Image)
+
 	// Decode base64 string to bytes
 	data, err := base64.StdEncoding.DecodeString(base64Image)
 	if err != nil {
@@ -151,4 +156,19 @@ func detectImageType(data []byte) string {
 	}
 
 	return ""
+}
+
+// stripDataURIPrefix removes the data URI prefix from a base64 string if present
+// Examples: "data:image/jpeg;base64,ABC123" -> "ABC123"
+//
+//	"data:image/png;base64,ABC123" -> "ABC123"
+//	"ABC123" -> "ABC123" (unchanged if no prefix)
+func stripDataURIPrefix(base64Str string) string {
+	// Check if string contains data URI prefix
+	if idx := strings.Index(base64Str, ";base64,"); idx != -1 {
+		// Return everything after ";base64,"
+		return base64Str[idx+8:]
+	}
+	// No prefix found, return original string
+	return base64Str
 }
