@@ -15,6 +15,11 @@ import (
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
+// boolPtr is a helper function to create a pointer to a boolean value
+func boolPtr(b bool) *bool {
+	return &b
+}
+
 // InitMongoDB initializes and returns a MongoDB client with connection pooling and retry logic
 func InitMongoDB(uri string, databaseName string) (*mongo.Database, error) {
 	logger := logger.GetLogger()
@@ -180,16 +185,19 @@ func InsertPost(ctx context.Context, db *mongo.Database, insertPost models.Inser
 
 	// Create a full Post object from the InsertPost data
 	post := models.Post{
-		CreatorId:   insertPost.CreatorId,
-		CreatorMail: insertPost.CreatorMail,
-		Title:       insertPost.Title,
-		Description: insertPost.Description,
-		Tags:        insertPost.Tags,
-		Text:        insertPost.Text,
-		PayPalMail:  insertPost.PayPalMail,
-		Images:      processedImages,    // Use the processed images
-		Comments:    []models.Comment{}, // Initialize with empty comments array
-		CreatedAt:   time.Now(),         // Set the creation timestamp
+		CreatorId:      insertPost.CreatorId,
+		CreatorMail:    insertPost.CreatorMail,
+		Title:          insertPost.Title,
+		Description:    insertPost.Description,
+		Tags:           insertPost.Tags,
+		Text:           insertPost.Text,
+		PayPalMail:     insertPost.PayPalMail,
+		Images:         processedImages,    // Use the processed images
+		Comments:       []models.Comment{}, // Initialize with empty comments array
+		IsTerminated:   boolPtr(false),
+		AcceptanceList: []models.AcceptanceRequest{},
+		AcceptedUser:   models.AcceptedUser{},
+		CreatedAt:      time.Now(), // Set the creation timestamp
 	}
 
 	// Insert the post (MongoDB will auto-generate the _id)
@@ -255,7 +263,7 @@ func GetPostsByCreator(ctx context.Context, db *mongo.Database, creatorId string
 // Only updates the fields from InsertPost, leaving _id, creator, and created_at unchanged
 // Images in the updateData are expected to be base64-encoded strings (without data URI prefix)
 // and will be processed (resized, optimized) before storage
-func PatchPostByIdAndCreatorId(ctx context.Context, db *mongo.Database, postID string, creatorId string, updateData models.InsertPost) error {
+func PatchPostByIdAndCreatorId(ctx context.Context, db *mongo.Database, postID string, creatorId string, updateData models.Post) error {
 	collection := db.Collection("posts")
 
 	// Convert the string ID to MongoDB ObjectID
@@ -282,12 +290,17 @@ func PatchPostByIdAndCreatorId(ctx context.Context, db *mongo.Database, postID s
 	// Prepare the update document with only the editable fields from InsertPost
 	update := bson.M{
 		"$set": bson.M{
-			"title":       updateData.Title,
-			"description": updateData.Description,
-			"tags":        updateData.Tags,
-			"text":        updateData.Text,
-			"payPalMail":  updateData.PayPalMail,
-			"images":      processedImages, // Use the processed images
+			"creatorMail":    updateData.CreatorMail,
+			"title":          updateData.Title,
+			"description":    updateData.Description,
+			"tags":           updateData.Tags,
+			"text":           updateData.Text,
+			"payPalMail":     updateData.PayPalMail,
+			"images":         processedImages, // Use the processed images
+			"comments":       updateData.Comments,
+			"isTerminated":   updateData.IsTerminated,
+			"acceptanceList": updateData.AcceptanceList,
+			"acceptedUser":   updateData.AcceptedUser,
 		},
 	}
 

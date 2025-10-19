@@ -16,6 +16,8 @@
 - [ICS Files](#ics-files)
   - [Get All Available ICS Files](#get-all-available-ics-files)
   - [Get ICS File](#get-ics-file)
+- [Memes](#memes)
+  - [Get Memes (Paginated)](#get-memes-paginated)
 
 ---
 
@@ -78,10 +80,12 @@ Success (200 OK):
     "text": "Detailed description of the camera...",
     "payPalMail": "seller@example.com",
     "images": [
-      "base64_encoded_image_1",
-      "base64_encoded_image_2"
+      "base64_encoded_image_1"
     ],
     "comments": [],
+    "isTerminated": false,
+    "acceptanceList": [],
+    "acceptedUser": {},
     "created_at": "2024-01-15T10:30:00Z"
   }
 ]
@@ -130,6 +134,9 @@ Success (200 OK):
     "base64_encoded_image_2"
   ],
   "comments": [],
+  "isTerminated": false,
+  "acceptanceList": [],
+  "acceptedUser": {},
   "created_at": "2024-01-15T10:30:00Z"
 }
 ```
@@ -361,6 +368,9 @@ Success (200 OK):
       "base64_encoded_image_1"
     ],
     "comments": [],
+    "isTerminated": false,
+    "acceptanceList": [],
+    "acceptedUser": {},
     "created_at": "2024-01-15T10:30:00Z"
   }
 ]
@@ -386,7 +396,7 @@ Error (500 Internal Server Error):
 
 **Endpoint:** `PATCH /api/v1/users/{creatorId}/{postId}`
 
-**Description:** Updates an existing post. Only the creator can update their own post.
+**Description:** Updates an existing post. Only the creator can update their own post. This endpoint now uses the full Post model including acceptance functionality.
 
 **Authentication:** Not required
 
@@ -412,7 +422,26 @@ Content-Type: application/json
   "images": [
     "base64 image1",
     "base64 image2"
-  ]
+  ],
+  "comments": [],
+  "isTerminated": false,
+  "acceptanceList": [
+    {
+      "userId": "buyer-firebase-uuid-1",
+      "userName": "John Buyer",
+      "requestedAt": "2025-10-19T08:30:00Z"
+    },
+    {
+      "userId": "buyer-firebase-uuid-2",
+      "userName": "Jane Smith",
+      "requestedAt": "2025-10-19T09:15:00Z"
+    }
+  ],
+  "acceptedUser": {
+    "userId": "buyer-firebase-uuid-1",
+    "userName": "John Buyer",
+    "acceptedAt": "2025-10-19T10:00:00Z"
+  }
 }
 ```
 
@@ -423,8 +452,12 @@ Content-Type: application/json
 - `description` (string, required): Short description of the item
 - `tags` (array of strings, required): Non-empty array of tags/categories
 - `text` (string, required): Detailed description/content
-- `payPalMail` (string, required): Valid email address for PayPal payments
+- `payPalMail` (string, optional): Valid email address for PayPal payments
 - `images` (array of strings, required): Non-empty array of Base64 encoded images
+- `comments` (array of Comment objects, required): Array of comments on the post
+- `isTerminated` (boolean, required): Indicates whether the post/listing is terminated/closed. Must be explicitly set to `true` or `false`
+- `acceptanceList` (array of AcceptanceRequest objects, required): List of users who have requested to accept/purchase the item
+- `acceptedUser` (AcceptedUser object, required): The user who has been accepted for the item. Use empty object `{}` if no user accepted yet
 
 **Response:**
 
@@ -583,6 +616,58 @@ File does not exist
 
 ---
 
+## Memes
+
+### Get Memes (Paginated)
+
+**Endpoint:** `GET /api/v1/memes/{page}`
+
+**Description:** Retrieves a paginated list of memes.
+
+**Authentication:** Required (via AuthMiddleware)
+
+**Path Parameters:**
+- `page` (integer, required): The page number to retrieve.
+
+**Request:**
+```http
+GET /api/v1/memes/1
+```
+
+**Response:**
+
+Success (200 OK):
+```json
+{
+  "totalPages": 10,
+  "hasNext": true,
+  "hasPrev": false,
+  "memeList": [
+    {
+      "id": "meme-id-123",
+      "imageUrl": "https://example.com/meme.jpg",
+      "altText": "A funny meme",
+      "imageB64": "base64_encoded_image_string",
+      "title": "My Awesome Meme",
+      "permalink": "https://example.com/meme-id-123",
+      "likes": "100",
+      "timeStamp": "2024-01-01T12:00:00Z",
+      "user": "MemeLord",
+      "tags": ["funny", "dev"],
+      "comments": ["First comment", "lol"]
+    }
+  ]
+}
+```
+
+Error (400 Bad Request):
+```
+Internal Server Error
+```
+(Note: The error message is generic, but it's returned for invalid page parameters)
+
+---
+
 ## Data Models
 
 ### Post Object
@@ -598,7 +683,29 @@ File does not exist
   "payPalMail": "string (email format)",
   "images": ["string (Base64)"],
   "comments": [Comment],
+  "isTerminated": boolean,
+  "acceptanceList": [AcceptanceRequest],
+  "acceptedUser": AcceptedUser,
   "created_at": "timestamp (ISO 8601)"
+}
+```
+
+### Post Object (Update/PATCH Request)
+**Note:** When updating a post via PATCH endpoint, you must provide the full Post object with all required fields.
+```json
+{
+  "creatorId": "string (required, Firebase UUID)",
+  "creatorMail": "string (required, email format)",
+  "title": "string (required)",
+  "description": "string (required)",
+  "tags": ["string"] (required, non-empty array),
+  "text": "string (required)",
+  "payPalMail": "string (optional, email format)",
+  "images": ["string"] (required, non-empty array of Base64 encoded images),
+  "comments": [Comment] (required, array of comment objects),
+  "isTerminated": boolean (required, must be explicitly true or false),
+  "acceptanceList": [AcceptanceRequest] (required, array of acceptance requests),
+  "acceptedUser": AcceptedUser (required, object with user details or empty object {})
 }
 ```
 
@@ -628,6 +735,52 @@ File does not exist
 }
 ```
 
+### AcceptanceRequest Object
+```json
+{
+  "userId": "string (required, Firebase UUID)",
+  "userName": "string (required)",
+  "requestedAt": "string (ISO 8601 timestamp)"
+}
+```
+
+### AcceptedUser Object
+```json
+{
+  "userId": "string (Firebase UUID)",
+  "userName": "string",
+  "acceptedAt": "string (ISO 8601 timestamp)"
+}
+```
+**Note:** When no user has been accepted yet, use an empty object `{}`.
+
+### Meme Object
+```json
+{
+  "id": "string",
+  "imageUrl": "string",
+  "altText": "string",
+  "imageB64": "string (Base64)",
+  "title": "string",
+  "permalink": "string",
+  "likes": "string",
+  "timeStamp": "string",
+  "user": "string",
+  "tags": ["string"],
+  "comments": ["string"]
+}
+```
+
+### MemeResponse Object
+```json
+{
+  "totalPages": "integer",
+  "hasNext": "boolean",
+  "hasPrev": "boolean",
+  "memeList": [Meme]
+}
+```
+
 ---
 
 ## Validation Rules
@@ -642,7 +795,10 @@ File does not exist
 - `tags` must be a non-empty array
 - `images` must be a non-empty array
 
-### Required Fields for InsertPost
+### Boolean Validation
+- `isTerminated` must be explicitly set to `true` or `false` (cannot be omitted in PATCH requests)
+
+### Required Fields for InsertPost (Create)
 All fields in InsertPost object are required:
 - creatorId
 - creatorMail
@@ -650,8 +806,28 @@ All fields in InsertPost object are required:
 - description
 - tags
 - text
-- payPalMail
+- payPalMail (optional)
 - images
+
+### Required Fields for Post (Update/PATCH)
+All fields in Post object are required:
+- creatorId
+- creatorMail
+- title
+- description
+- tags
+- text
+- payPalMail (optional)
+- images
+- comments
+- isTerminated (must be boolean: true or false)
+- acceptanceList
+- acceptedUser
+
+### Required Fields for AcceptanceRequest
+- userId
+- userName
+- requestedAt (optional, can be set by client or server)
 
 ### Required Fields for Comment
 All fields in Comment object are required:
@@ -711,5 +887,6 @@ For validation errors:
 | GET | `/api/v1/users/{creatorId}/posts` | Get posts by creator |
 | PATCH | `/api/v1/users/{creatorId}/{postId}` | Update post |
 | DELETE | `/api/v1/users/{creatorId}/{postId}` | Delete post |
+| GET | `/api/v1/memes/{page}` | Get memes (paginated) |
 | GET | `/api/v1/ics` | Get all available ICS file names |
 | GET | `/api/v1/ics/{fileName}` | Download specific ICS file |
