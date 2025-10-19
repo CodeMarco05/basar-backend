@@ -59,7 +59,7 @@ func PatchPostByIdAndCreatorId(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	var post models.InsertPost
+	var post models.Post
 
 	err := json.NewDecoder(r.Body).Decode(&post)
 

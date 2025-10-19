@@ -127,7 +127,7 @@ func ChiConfig() *chi.Mux {
 	r.Get("/health", routes.HealthCheck)
 
 	r.Route("/api/v1", func(r chi.Router) {
-		r.Use(AuthMiddleware)
+		//r.Use(AuthMiddleware)
 		r.Route("/posts", func(r chi.Router) {
 			r.Get("/", posts.GetAllPosts)
 			r.Get("/{postId}", posts.GetPost)
