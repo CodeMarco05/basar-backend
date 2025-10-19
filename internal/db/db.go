@@ -472,3 +472,24 @@ func GetAllTags(ctx context.Context, db *mongo.Database) ([]string, error) {
 
 	return tags, nil
 }
+
+// GetUserAcceptedPostsByUserId retrieves all posts that have been accepted by a specific user
+// Filters by the acceptedUser.userId field in the Post model
+func GetUserAcceptedPostsByUserId(ctx context.Context, db *mongo.Database, userId string) ([]models.Post, error) {
+	collection := db.Collection("posts")
+
+	// Find all posts where acceptedUser.userId matches the provided userId
+	cursor, err := collection.Find(ctx, bson.M{"acceptedUser.userId": userId})
+	if err != nil {
+		return nil, fmt.Errorf("failed to find accepted posts by userId: %w", err)
+	}
+	defer cursor.Close(ctx)
+
+	// Decode all posts
+	var posts []models.Post
+	if err := cursor.All(ctx, &posts); err != nil {
+		return nil, fmt.Errorf("failed to decode accepted posts: %w", err)
+	}
+
+	return posts, nil
+}
