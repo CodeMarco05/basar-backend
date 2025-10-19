@@ -6,10 +6,10 @@ import (
 	"hackathon-basar-backend/internal/config"
 	"hackathon-basar-backend/internal/db"
 	"hackathon-basar-backend/internal/logger"
-	"hackathon-basar-backend/internal/server"
 	"hackathon-basar-backend/internal/server/routes"
 	"hackathon-basar-backend/internal/server/routes/v1/comment"
 	"hackathon-basar-backend/internal/server/routes/v1/ics"
+	"hackathon-basar-backend/internal/server/routes/v1/memes"
 	"hackathon-basar-backend/internal/server/routes/v1/posts"
 	"hackathon-basar-backend/internal/server/routes/v1/users"
 	"net/http"
@@ -151,10 +151,14 @@ func ChiConfig() *chi.Mux {
 			r.Get("/", ics.GetAllAvailableFileNames)
 			r.Get("/{fileName}", ics.GetIcsFile)
 		})
+
+		r.Route("/memes", func(r chi.Router) {
+			r.Get("/{page}", memes.GetMemePage)
+		})
 	})
 
 	// -------------------------- setup ics file fetcher -------------------------- //
-	server.IcsFetcherSetupAndStart()
+	// server.IcsFetcherSetupAndStart()
 
 	return r
 }
