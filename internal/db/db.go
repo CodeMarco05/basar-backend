@@ -473,6 +473,7 @@ func GetAllTags(ctx context.Context, db *mongo.Database) ([]string, error) {
 	return tags, nil
 }
 
+// get all the posts i want and got accepted by the creator
 // GetUserAcceptedPostsByUserId retrieves all posts that have been accepted by a specific user
 // Filters by the acceptedUser.userId field in the Post model
 func GetUserAcceptedPostsByUserId(ctx context.Context, db *mongo.Database, userId string) ([]models.Post, error) {

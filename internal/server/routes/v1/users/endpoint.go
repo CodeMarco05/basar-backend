@@ -131,3 +131,31 @@ func DeletePostByIdAndCreatorId(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 }
+
+func GetAcceptedPostsByCreatorId(w http.ResponseWriter, r *http.Request) {
+	log := logger.GetLogger()
+
+	creatorId := chi.URLParam(r, "creatorId")
+	if creatorId == "" {
+		log.Error().Msgf("Invalid request without creatorId")
+		http.Error(w, "creator id was not present in the url param", http.StatusBadRequest)
+		return
+	}
+
+	posts, err := db.GetUserAcceptedPostsByUserId(r.Context(), config.MongoDB, creatorId)
+	if err != nil {
+		log.Error().Msgf("Error during post fetching: %v", err)
+		http.Error(w, "Error during post fetching", http.StatusInternalServerError)
+		return
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(http.StatusOK)
+
+	err = json.NewEncoder(w).Encode(posts)
+	if err != nil {
+		log.Error().Msgf("Writing to the host failed during transmitting: %v", err)
+		http.Error(w, "Failed to encode response", http.StatusInternalServerError)
+		return
+	}
+}

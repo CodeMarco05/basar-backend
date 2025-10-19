@@ -145,6 +145,9 @@ func ChiConfig() *chi.Mux {
 			r.Get("/{creatorId}/posts", users.GetPostsByCreator)
 			r.Patch("/{creatorId}/{postId}", users.PatchPostByIdAndCreatorId)
 			r.Delete("/{creatorId}/{postId}", users.DeletePostByIdAndCreatorId)
+
+			// get all the posts i want and got accepted by the creator
+			r.Get("/{creatorId}/acceptedPosts", users.GetAcceptedPostsByCreatorId)
 		})
 
 		r.Route("/ics", func(r chi.Router) {
