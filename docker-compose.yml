@@ -27,6 +27,17 @@ services:
       timeout: 5s
       retries: 5
 
+  bazzar-app:
+    container_name: bazzar-app
+    image: danielschatz/bazzar-app:1.2.0
+    ports:
+      - "8080:80"
+    restart: unless-stopped
+    environment:
+      - NODE_ENV=production
+    networks:
+      - application-network
+
   mongodb:
     image: mongo:7
     container_name: mongodb

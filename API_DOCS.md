@@ -888,5 +888,3 @@ For validation errors:
 | PATCH | `/api/v1/users/{creatorId}/{postId}` | Update post |
 | DELETE | `/api/v1/users/{creatorId}/{postId}` | Delete post |
 | GET | `/api/v1/memes/{page}` | Get memes (paginated) |
-| GET | `/api/v1/ics` | Get all available ICS file names |
-| GET | `/api/v1/ics/{fileName}` | Download specific ICS file |
